@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-body text-black px-1 bg-white;
+  }
+}
+@layer components {
+  .page-container {
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .page-container-product {
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .page-container-admin {
+    max-width: 1300px;
+    margin-right: auto;
+    margin-left: 230px;
+    padding: 1rem 1.5rem;
+  }
+  .text-no-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+  }
+  .button {
+    @apply py-4 px-6 bg-primary text-white font-bold rounded-sm text-center cursor-pointer;
+  }
+  .button-admin {
+    @apply py-4 px-6 bg-admin text-white font-bold rounded-sm text-center cursor-pointer;
+  }
+  .product-list .swiper-slide {
+    width: 280px;
+    height: auto;
+  }
+}
+.zoom-enter .content {
+  opacity: 0;
+  transform: scale(0.5);
+}
+.zoom-enter-active .content {
+  opacity: 1;
+  transform: scale(1);
+}
+.zoom-exit .content {
+  opacity: 1;
+}
+.zoom-exit-active .content {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}

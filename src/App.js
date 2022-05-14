@@ -1,24 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { Fragment, Suspense, useState } from "react";
+import "swiper/scss";
+import AppRouter from "./AppRouter";
+import { OpenAdsProvider } from "./contexts/openAdsContext";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Suspense fallback={<></>}>
+        <OpenAdsProvider>
+          <AppRouter></AppRouter>
+        </OpenAdsProvider>
+      </Suspense>
+    </Fragment>
   );
 }
 
