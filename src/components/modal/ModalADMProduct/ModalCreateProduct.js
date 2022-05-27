@@ -1,4 +1,8 @@
-import React from "react";
+import { data } from "autoprefixer";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { API, config } from "../../../config";
 
 const ModalCreateProduct = ({ onClose = () => {} }) => {
   return (
@@ -14,75 +18,161 @@ const ModalCreateProduct = ({ onClose = () => {} }) => {
           <i className="fas fa-seedling text-3xl mr-5 "></i>
           Create Product
         </div>
-        <form action="" className="flex flex-col items-end">
-          <div className="mb-5 w-full">
-            <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
-              PRODUCT NAME
-            </label>
-            <br></br>
-            <input
-              type="text"
-              className="p-3 w-full outline-none border focus:border-admin mt-2"
-            />
-          </div>
-          <div className="mb-5 w-full">
-            <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
-              DESCRIPTION
-            </label>
-            <br></br>
-            <textarea
-              type="text"
-              className="p-3 w-full outline-none border focus:border-admin mt-2 resize-none"
-            />
-          </div>
-          <div className="mb-5 w-full">
-            <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
-              QUANTITY
-            </label>
-            <br></br>
-            <input
-              type="text"
-              className="p-3 w-full outline-none border focus:border-admin mt-2"
-            />
-          </div>
-
-          <div className="mb-5 w-full">
-            <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
-              PRICE
-            </label>
-            <br></br>
-            <input
-              type="text"
-              className="p-3 w-full outline-none border focus:border-admin mt-2"
-            />
-          </div>
-          <div className="mb-5 w-full">
-            <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
-              IMAGE
-            </label>
-            <br></br>
-            <input
-              type="file"
-              className="p-3 w-full outline-none border focus:border-admin mt-2"
-            />
-          </div>
-          <div className="mb-5 w-full">
-            <label className="text-gray-500 text-sm font-semibold">
-              CATEGORY
-            </label>
-            <br></br>
-            <select className="outline-none border px-4 py-2 mt-2">
-              <option>Choose Category</option>
-              <option value="">Category 1</option>
-              <option value="">Category 2</option>
-              <option value="">Category 3</option>
-            </select>
-          </div>
-          <button className="button w-[30%] mt-5 bg-admin">Confirm</button>
-        </form>
+        <FormCreateProduct></FormCreateProduct>
       </div>
     </div>
   );
 };
-
+const postProduct = async (data) => {
+  try {
+    const res = await axios.post(API.getAPIAdmin("product"), data, config);
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getAllCategory = async () => {
+  try {
+    const res = await axios.get(API.getAPIAdmin("category"), config);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+const FormCreateProduct = () => {
+  const { register, handleSubmit } = useForm();
+  const [category, setCategory] = useState([]);
+  const handleGetAllCategory = async () => {
+    const data = await getAllCategory();
+    setCategory(data);
+  };
+  const handleFile = (data) => {
+    const file = data.image[0];
+    const formData = new FormData();
+    return formData.append("image", file, file.name);
+    // return URL.createObjectURL(file);
+  };
+  const onSubmit = (values, e) => {
+    e.preventDefault();
+    console.log(values);
+    const image = new FormData(handleFile(values));
+    const newData = {
+      name: values.name,
+      description: values.description,
+      information: values.information,
+      category: values.category,
+      price: values.price,
+      quantitySold: values.quantitySold,
+      quantityStock: values.quantityStock,
+      image: image,
+    };
+    console.log(newData);
+    postProduct(newData);
+  };
+  useEffect(() => {
+    handleGetAllCategory();
+  }, []);
+  return (
+    <form
+      action=""
+      className="flex flex-col items-end"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="mb-5 w-full">
+        <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
+          PRODUCT NAME
+        </label>
+        <br></br>
+        <input
+          type="text"
+          {...register("name")}
+          className="p-3 w-full outline-none border focus:border-admin mt-2"
+        />
+      </div>
+      <div className="mb-5 w-full">
+        <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
+          DESCRIPTION
+        </label>
+        <br></br>
+        <textarea
+          type="text"
+          {...register("description")}
+          className="p-3 w-full outline-none border focus:border-admin mt-2 resize-none"
+        />
+      </div>
+      <div className="mb-5 w-full">
+        <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
+          INFORMATION
+        </label>
+        <br></br>
+        <textarea
+          type="text"
+          {...register("information")}
+          className="p-3 w-full outline-none border focus:border-admin mt-2 resize-none"
+        />
+      </div>
+      <div className="mb-5 w-full">
+        <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
+          PRICE
+        </label>
+        <br></br>
+        <input
+          type="text"
+          {...register("price")}
+          className="p-3 w-full outline-none border focus:border-admin mt-2"
+        />
+      </div>
+      <div className="mb-5 w-full">
+        <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
+          QUANTITY STOCK
+        </label>
+        <br></br>
+        <input
+          type="text"
+          {...register("quantityStock")}
+          className="p-3 w-full outline-none border focus:border-admin mt-2"
+        />
+      </div>
+      <div className="mb-5 w-full">
+        <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
+          QUANTITY SOLD
+        </label>
+        <br></br>
+        <input
+          type="text"
+          {...register("quantitySold")}
+          className="p-3 w-full outline-none border focus:border-admin mt-2"
+        />
+      </div>
+      <div className="mb-5 w-full">
+        <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
+          IMAGE
+        </label>
+        <br></br>
+        <input
+          type="file"
+          {...register("image")}
+          className="p-3 w-full outline-none border focus:border-admin mt-2"
+        />
+      </div>
+      <div className="mb-5 w-full">
+        <label className="text-gray-500 text-sm font-semibold">CATEGORY</label>
+        <br></br>
+        <select
+          className="outline-none border px-4 py-2 mt-2"
+          {...register("category")}
+        >
+          <option value={""}>Choose Category</option>
+          {category.length > 0 &&
+            category.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+        </select>
+      </div>
+      <button className="button w-[30%] mt-5 bg-admin">Confirm</button>
+    </form>
+  );
+};
 export default ModalCreateProduct;

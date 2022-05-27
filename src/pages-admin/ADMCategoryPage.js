@@ -10,7 +10,6 @@ const getAllCategory = async () => {
     const res = await axios.get(API.getAPIAdmin("category"), config);
     return res.data;
   } catch (error) {
-    // alert(res.data.message);
     console.log(error);
   }
 };
@@ -21,7 +20,7 @@ const deleteCategory = async (id) => {
     window.location.reload(false);
   } catch (error) {
     console.log(error);
-    alert("Delete failed");
+    alert(error.response.data.message);
   }
 };
 
@@ -124,6 +123,7 @@ const ADMCategoryPage = () => {
         {choice === "edit" && (
           <ModalEditCategory
             onClose={() => setOpenModal(false)}
+            id={idCategory}
           ></ModalEditCategory>
         )}
       </ModalAdvanced>
@@ -159,6 +159,7 @@ const TableCategory = ({
           onClick={() => {
             setOpenModal(true);
             setChoice("edit");
+            setIdCategory(item.id);
           }}
         >
           <i className="fas fa-edit"></i>

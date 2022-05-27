@@ -22,7 +22,7 @@ const deleteAccount = async (id) => {
     window.location.reload(false);
   } catch (error) {
     console.log(error);
-    alert("Delete failed");
+    alert(error.response.data.message);
   }
 };
 const ADMAccountPage = () => {

@@ -72,9 +72,7 @@ const FormEditAccount = ({ idUser }) => {
   ];
   const onSubmit = (values, e) => {
     e.preventDefault();
-    console.log("gia tri mac dinh", values);
     const data = handleData(values);
-    console.log("gia tri sau khi handle", data);
     putAccount(data, idUser);
   };
   const handleData = (data) => {

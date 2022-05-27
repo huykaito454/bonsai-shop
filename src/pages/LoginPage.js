@@ -40,8 +40,8 @@ const FormLogin = () => {
       localStorage.setItem("role", JSON.stringify(res?.data?.data?.roles));
       navigate("/");
       window.location.reload(false);
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      alert(error.response.data.message);
     }
   };
   return (

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOpenAds } from "../../contexts/openAdsContext";
 import { NavLink } from "react-router-dom";
 import ModalAdvanced from "../modal/ModalAdvanced";
+
 const Header = () => {
   const { open } = useOpenAds();
   const navigate = useNavigate();

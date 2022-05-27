@@ -1,6 +1,46 @@
-import React from "react";
-
-const ModalEditCategory = ({ onClose = () => {} }) => {
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { API, config } from "../../../config";
+const getCategory = async (id) => {
+  try {
+    const res = await axios.get(API.getAPIAdmin(`category/${id}`), config);
+    return res.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+const putCategory = async (data, id) => {
+  try {
+    const res = await axios.put(
+      API.getAPIAdmin(`category/${id}`),
+      data,
+      config
+    );
+    alert(res.data.message);
+    window.location.reload(false);
+  } catch (error) {
+    alert(error.response.data.message);
+  }
+};
+const ModalEditCategory = ({ onClose = () => {}, id }) => {
+  const { register, handleSubmit, setValue } = useForm();
+  const handleGetCategory = async () => {
+    const data = await getCategory(id);
+    handleDefaultValues(data);
+  };
+  const handleDefaultValues = (data) => {
+    for (const [key, value] of Object.entries(data)) {
+      setValue(key, value);
+    }
+  };
+  const onSubmit = (values, e) => {
+    e.preventDefault();
+    putCategory(values, id);
+  };
+  useEffect(() => {
+    handleGetCategory();
+  }, []);
   return (
     <div className="bg-white p-10 rounded-md w-full max-w-[1200px] max-h-[800px] overflow-scroll">
       <span
@@ -14,7 +54,11 @@ const ModalEditCategory = ({ onClose = () => {} }) => {
           <i className="fas fa-edit text-3xl mr-5 "></i>
           Edit Category
         </div>
-        <form action="" className="flex flex-col items-end">
+        <form
+          action=""
+          className="flex flex-col items-end"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="mb-5 w-full">
             <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
               CATEGORY NAME
@@ -22,6 +66,7 @@ const ModalEditCategory = ({ onClose = () => {} }) => {
             <br></br>
             <input
               type="text"
+              {...register("name")}
               className="p-3 w-full outline-none border focus:border-admin mt-2"
             />
           </div>
@@ -32,6 +77,7 @@ const ModalEditCategory = ({ onClose = () => {} }) => {
             <br></br>
             <textarea
               type="text"
+              {...register("description")}
               className="p-3 w-full outline-none border focus:border-admin mt-2 resize-none"
             />
           </div>

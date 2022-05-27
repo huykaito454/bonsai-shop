@@ -1,6 +1,22 @@
+import axios from "axios";
 import React from "react";
-
+import { useForm } from "react-hook-form";
+import { API, config } from "../../../config";
+const postCategory = async (data) => {
+  try {
+    const res = await axios.post(API.getAPIAdmin(`category`), data, config);
+    alert(res.data.message);
+    window.location.reload(false);
+  } catch (error) {
+    console.log(error.response.data.message);
+  }
+};
 const ModalCreateCategory = ({ onClose = () => {} }) => {
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (values, e) => {
+    e.preventDefault();
+    postCategory(values);
+  };
   return (
     <div className="bg-white p-10 rounded-md w-full max-w-[1200px] max-h-[800px] overflow-scroll">
       <span
@@ -14,7 +30,11 @@ const ModalCreateCategory = ({ onClose = () => {} }) => {
           <i className="fas fa-list-ul text-3xl mr-5 "></i>
           Create Category
         </div>
-        <form action="" className="flex flex-col items-end">
+        <form
+          action=""
+          className="flex flex-col items-end"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="mb-5 w-full">
             <label htmlFor="" className=" text-gray-500 text-sm font-semibold">
               CATEGORY NAME
@@ -22,6 +42,7 @@ const ModalCreateCategory = ({ onClose = () => {} }) => {
             <br></br>
             <input
               type="text"
+              {...register("name")}
               className="p-3 w-full outline-none border focus:border-admin mt-2"
             />
           </div>
@@ -32,6 +53,7 @@ const ModalCreateCategory = ({ onClose = () => {} }) => {
             <br></br>
             <textarea
               type="text"
+              {...register("description")}
               className="p-3 w-full outline-none border focus:border-admin mt-2 resize-none"
             />
           </div>
