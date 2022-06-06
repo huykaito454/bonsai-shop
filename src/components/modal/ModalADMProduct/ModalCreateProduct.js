@@ -1,8 +1,6 @@
-import { data } from "autoprefixer";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { API, config } from "../../../config";
+import { getDataAdmin, postDataAdmin } from "../../../http/httpHandle";
 
 const ModalCreateProduct = ({ onClose = () => {} }) => {
   return (
@@ -23,27 +21,11 @@ const ModalCreateProduct = ({ onClose = () => {} }) => {
     </div>
   );
 };
-const postProduct = async (data) => {
-  try {
-    const res = await axios.post(API.getAPIAdmin("product"), data, config);
-    console.log(res.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-const getAllCategory = async () => {
-  try {
-    const res = await axios.get(API.getAPIAdmin("category"), config);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
 const FormCreateProduct = () => {
   const { register, handleSubmit } = useForm();
   const [category, setCategory] = useState([]);
   const handleGetAllCategory = async () => {
-    const data = await getAllCategory();
+    const data = await getDataAdmin("category");
     setCategory(data);
   };
   const handleFile = (data) => {
@@ -67,7 +49,7 @@ const FormCreateProduct = () => {
       image: image,
     };
     console.log(newData);
-    postProduct(newData);
+    postDataAdmin("product", newData);
   };
   useEffect(() => {
     handleGetAllCategory();

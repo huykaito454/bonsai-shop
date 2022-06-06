@@ -141,11 +141,11 @@ const AccountDetails = ({ open }) => {
             htmlFor=""
             className=" text-gray-500 text-sm mb-5 font-semibold"
           >
-            BIRTHDAY
+            PASSWORD
           </label>
           <br></br>
           <input
-            type="text"
+            type="password"
             className="p-3 w-full outline-none border focus:border-primary mt-2"
           />
         </div>

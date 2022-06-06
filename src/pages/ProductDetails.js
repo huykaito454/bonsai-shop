@@ -7,27 +7,16 @@ const ProductDetails = () => {
     <>
       <div className="w-full page-container flex items-start justify-between px-10 mt-14 mb-20">
         <div className="product-details flex items-start justify-between w-[48%]">
-          <div className="grid grid-cols-1 gap-2 w-[20%] ">
-            <ProductCard></ProductCard>
-            <ProductCard></ProductCard>
-            <ProductCard></ProductCard>
-          </div>
-          <div className="w-[75%]">
+          <div className="w-full">
             <ProductCard></ProductCard>
           </div>
         </div>
         <div className="product-content w-[48%] flex flex-col">
           <h1 className="text-4xl font-semibold mb-4">Large Snake Laurentii</h1>
           <p className="text-3xl font-semibold mb-8">$88</p>
-          <div className="flex items-stretch justify-between w-[80%] mb-10">
-            <p className="font-semibold text-sm mr-14 w-[20%]">Planter Style</p>
-            <select className="px-3 py-3 w-[70%] border">
-              <option value="">Grow Pot Only</option>
-            </select>
-          </div>
           <div className="flex items-stretch justify-between w-[80%] ">
-            <p className="font-semibold text-sm mr-14 w-[20%]">Size</p>
-            <p className="font-semibold text-sm w-[70%]">Large</p>
+            <p className="font-semibold text-sm mr-14 w-[20%]">In store</p>
+            <p className="font-semibold text-sm w-[70%]">200</p>
           </div>
           <div className="my-5 border-t-2 w-[80%]"></div>
           <div className="flex items-stretch justify-between w-[80%] mb-10">
@@ -82,7 +71,7 @@ const ProductDetails = () => {
         </div>
       </div>
       <YouMightLike></YouMightLike>
-      <Blog
+      {/* <Blog
         title={"Plant Bio"}
         content={
           "The Peperomia obtusifolia is native to the Tropical Americas and Caribbean, and is in the family Piperaceae. A popular houseplant, it is sometimes called a baby rubber plant because of its thick green leaves. This peperomia is easily propagated via leaf-cuttings, and is able to regenerate after completely dying back to the stem. Like other peperomias, the Obtusifolia is non-toxic, making it safe to keep around your furry friends. Under ideal conditions, it will flower indoors, producing narrow white spikes."
@@ -90,7 +79,7 @@ const ProductDetails = () => {
         url={
           "https://cdn.shopify.com/s/files/1/0150/6262/t/400/assets/pdp-plant-bio-image_air-plants.jpg?v=1773058121048098298"
         }
-      ></Blog>
+      ></Blog> */}
     </>
   );
 };

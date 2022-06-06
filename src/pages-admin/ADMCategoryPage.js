@@ -1,42 +1,22 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ModalCreateCategory from "../components/modal/ModalADMCategory/ModalCreateCategory";
 import ModalEditCategory from "../components/modal/ModalADMCategory/ModalEditCategory";
 import ModalInforCategory from "../components/modal/ModalADMCategory/ModalInforCategory";
 import ModalAdvanced from "../components/modal/ModalAdvanced";
-import { API, config } from "../config";
-const getAllCategory = async () => {
-  try {
-    const res = await axios.get(API.getAPIAdmin("category"), config);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-const deleteCategory = async (id) => {
-  try {
-    const res = await axios.delete(API.getAPIAdmin(`category/${id}`), config);
-    alert(res.data.message);
-    window.location.reload(false);
-  } catch (error) {
-    console.log(error);
-    alert(error.response.data.message);
-  }
-};
-
+import { deleteDataAdmin, getDataAdmin } from "../http/httpHandle";
 const ADMCategoryPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [choice, setChoice] = useState("");
   const [idCategory, setIdCategory] = useState();
   const [category, setCategory] = useState([]);
   const handleGetAllCategory = async () => {
-    const data = await getAllCategory();
+    const data = await getDataAdmin("category");
     setCategory(data);
   };
   const handleDeleteCategory = (id) => {
     let confirmAction = window.confirm("Are you sure to delete this category?");
     if (confirmAction) {
-      deleteCategory(id);
+      deleteDataAdmin(`category/${id}`);
     } else return;
   };
   useEffect(() => {

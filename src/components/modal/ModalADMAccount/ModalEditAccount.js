@@ -1,7 +1,6 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { API, config } from "../../../config";
+import { getDataAdmin, putDataAdmin } from "../../../http/httpHandle";
 
 const ModalEditAccount = ({ onClose = () => {}, id }) => {
   return (
@@ -22,31 +21,13 @@ const ModalEditAccount = ({ onClose = () => {}, id }) => {
     </div>
   );
 };
-const getAccount = async (id) => {
-  try {
-    const res = await axios.get(API.getAPIAdmin(`account/${id}`), config);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-const putAccount = async (data, id) => {
-  try {
-    const res = await axios.put(API.getAPIAdmin(`account/${id}`), data, config);
-    console.log(res);
-    alert(res.data.message);
-    window.location.reload(false);
-  } catch (error) {
-    alert("Error. Please try again !");
-  }
-};
 const FormEditAccount = ({ idUser }) => {
   const [account, setAccount] = useState([]);
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: account,
   });
   const handleGetAccount = async () => {
-    const data = await getAccount(idUser);
+    const data = await getDataAdmin(`account/${idUser}`);
     setAccount(data?.data);
     handleSetDefaultValue(data?.data);
     handleCheckbox(data?.data.roles);
@@ -73,7 +54,7 @@ const FormEditAccount = ({ idUser }) => {
   const onSubmit = (values, e) => {
     e.preventDefault();
     const data = handleData(values);
-    putAccount(data, idUser);
+    putDataAdmin(`account/${idUser}`, data);
   };
   const handleData = (data) => {
     const roles = [];

@@ -1,23 +1,12 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { API, config } from "../../../config";
-const getCategory = async (id) => {
-  try {
-    const res = await axios.get(API.getAPIAdmin(`category/${id}`), config);
-    return res.data.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
+import { getDataAdmin } from "../../../http/httpHandle";
 const ModalInforCategory = ({ onClose = () => {}, id }) => {
   const [category, setCategory] = useState([]);
   const handleGetCategory = async () => {
-    const data = await getCategory(id);
-    setCategory(data);
+    const data = await getDataAdmin(`category/${id}`);
+    setCategory(data.data);
   };
   useEffect(() => {
-    console.log(id);
     handleGetCategory();
   }, []);
   return (
@@ -35,13 +24,13 @@ const ModalInforCategory = ({ onClose = () => {}, id }) => {
         </div>
         <div className="font-body2">
           <div className="flex items-start justify-between w-full">
-            <div className=" flex flex-col">
+            <div className=" flex flex-col w-full">
               <div className="w-full flex items-start mb-5">
-                <span className="mr-5 w-[12%]">NAME : </span>
+                <span className="mr-5 w-[30%]">NAME : </span>
                 <span className="flex-1">{category.name}</span>
               </div>
               <div className="w-full flex items-start">
-                <span className="mr-5 w-[12%] ">DESCRIPTION : </span>
+                <span className="mr-5 w-[30%] ">DESCRIPTION : </span>
                 <span className="text-justify flex-1">
                   {" "}
                   {category.description}

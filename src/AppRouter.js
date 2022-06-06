@@ -119,10 +119,10 @@ export default function AppRouter() {
           }
         ></Route>
         <Route
-          path="/new-arrivals"
+          path="/new-release"
           element={
             <ProductPage
-              title="New Arrivals"
+              title="New Release"
               desc="New plants, new gifts, new sill, new you."
             ></ProductPage>
           }

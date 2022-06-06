@@ -1,21 +1,11 @@
-import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { API, config } from "../../../config";
-const postCategory = async (data) => {
-  try {
-    const res = await axios.post(API.getAPIAdmin(`category`), data, config);
-    alert(res.data.message);
-    window.location.reload(false);
-  } catch (error) {
-    console.log(error.response.data.message);
-  }
-};
+import { postDataAdmin } from "../../../http/httpHandle";
 const ModalCreateCategory = ({ onClose = () => {} }) => {
   const { register, handleSubmit } = useForm();
   const onSubmit = (values, e) => {
     e.preventDefault();
-    postCategory(values);
+    postDataAdmin("category", values);
   };
   return (
     <div className="bg-white p-10 rounded-md w-full max-w-[1200px] max-h-[800px] overflow-scroll">

@@ -1,18 +1,10 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { API, config } from "../../../config";
-const getAccount = async (id) => {
-  try {
-    const res = await axios.get(API.getAPIAdmin(`account/${id}`), config);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+import { getDataAdmin } from "../../../http/httpHandle";
+
 const ModalInforAccount = ({ onClose = () => {}, id }) => {
   const [account, setAccount] = useState([]);
   const handleGetAllAccount = async () => {
-    const data = await getAccount(id);
+    const data = await getDataAdmin(`account/${id}`);
     setAccount(data.data);
   };
   useEffect(() => {

@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { set, useForm } from "react-hook-form";
 import { API } from "../config";
 import axios from "axios";
-
 import { config } from "react-transition-group";
 const LoginPage = () => {
   return (

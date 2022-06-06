@@ -1,30 +1,9 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import useSWR from "swr";
 import ModalCreateAccount from "../components/modal/ModalADMAccount/ModalCreateAccount";
 import ModalEditAccount from "../components/modal/ModalADMAccount/ModalEditAccount";
 import ModalInforAccount from "../components/modal/ModalADMAccount/ModalInforAccount";
 import ModalAdvanced from "../components/modal/ModalAdvanced";
-import { API, config, fetcher } from "../config";
-const getAllAccount = async () => {
-  try {
-    const res = await axios.get(API.getAPIAdmin("account"), config);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const deleteAccount = async (id) => {
-  try {
-    const res = await axios.delete(API.getAPIAdmin(`account/${id}`), config);
-    alert(res.data.message);
-    window.location.reload(false);
-  } catch (error) {
-    console.log(error);
-    alert(error.response.data.message);
-  }
-};
+import { deleteDataAdmin, getDataAdmin } from "../http/httpHandle";
 const ADMAccountPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [choice, setChoice] = useState("");
@@ -33,7 +12,7 @@ const ADMAccountPage = () => {
   const [idFind, setIdFind] = useState();
   const [selectValue, setSelectValue] = useState(null);
   const handleGetAllAccount = async () => {
-    const data = await getAllAccount();
+    const data = await getDataAdmin("account");
     if (selectValue) {
       const dataSortByRole = data.filter((item) => {
         const dataRole = item.roles.filter((item) => {
@@ -56,7 +35,7 @@ const ADMAccountPage = () => {
   const handleDeleteAccount = (id) => {
     let confirmAction = window.confirm("Are you sure to delete this account?");
     if (confirmAction) {
-      deleteAccount(id);
+      deleteDataAdmin(`account/${id}`);
     } else return;
   };
   useEffect(() => {

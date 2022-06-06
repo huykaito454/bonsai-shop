@@ -36,7 +36,7 @@ const MenuAdmin = () => {
           <i className="fas fa-users w-[20%] text-xl"></i>
           <span className="text-base font-semibold">Account</span>
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to={"/admin/reward-points"}
           className={({ isActive }) =>
             isActive
@@ -46,7 +46,7 @@ const MenuAdmin = () => {
         >
           <i className="fas fa-donate w-[20%] text-xl"></i>
           <span className="text-base font-semibold">Reward Points</span>
-        </NavLink>
+        </NavLink> */}
         <NavLink
           to={"/admin/product"}
           className={({ isActive }) =>

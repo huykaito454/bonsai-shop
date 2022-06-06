@@ -1,8 +1,6 @@
-import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { API, config } from "../../../config";
+import { postDataAdmin } from "../../../http/httpHandle";
 
 const ModalCreateAccount = ({ onClose = () => {} }) => {
   return (
@@ -23,17 +21,6 @@ const ModalCreateAccount = ({ onClose = () => {} }) => {
     </div>
   );
 };
-
-const postAccount = async (data) => {
-  try {
-    const res = await axios.post(API.getAPIAdmin(`account`), data, config);
-    console.log(res);
-    alert(res.data.message);
-    window.location.reload(false);
-  } catch (error) {
-    alert("Error. Please try again !");
-  }
-};
 const FormCreateAccount = () => {
   const { register, handleSubmit } = useForm();
   const roleList = [
@@ -44,7 +31,7 @@ const FormCreateAccount = () => {
   const onSubmit = (values, e) => {
     e.preventDefault();
     const data = handleData(values);
-    postAccount(data);
+    postDataAdmin("account", data);
   };
   const handleData = (data) => {
     const roles = [];

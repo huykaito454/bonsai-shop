@@ -35,8 +35,8 @@ const Header = () => {
           <NavLink to={"/other-product"} className="mr-10 cursor-pointer">
             Other
           </NavLink>
-          <NavLink to={"/new-arrivals"} className="mr-10 cursor-pointer">
-            New Arrivals
+          <NavLink to={"/new-release"} className="mr-10 cursor-pointer">
+            New Release
           </NavLink>
           <NavLink to={"/contact"} className="mr-10 cursor-pointer">
             Contact

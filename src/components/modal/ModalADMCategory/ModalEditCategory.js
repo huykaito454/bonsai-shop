@@ -2,32 +2,12 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { API, config } from "../../../config";
-const getCategory = async (id) => {
-  try {
-    const res = await axios.get(API.getAPIAdmin(`category/${id}`), config);
-    return res.data.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-const putCategory = async (data, id) => {
-  try {
-    const res = await axios.put(
-      API.getAPIAdmin(`category/${id}`),
-      data,
-      config
-    );
-    alert(res.data.message);
-    window.location.reload(false);
-  } catch (error) {
-    alert(error.response.data.message);
-  }
-};
+import { getDataAdmin, putDataAdmin } from "../../../http/httpHandle";
 const ModalEditCategory = ({ onClose = () => {}, id }) => {
   const { register, handleSubmit, setValue } = useForm();
   const handleGetCategory = async () => {
-    const data = await getCategory(id);
-    handleDefaultValues(data);
+    const data = await getDataAdmin(`category/${id}`);
+    handleDefaultValues(data.data);
   };
   const handleDefaultValues = (data) => {
     for (const [key, value] of Object.entries(data)) {
@@ -36,7 +16,7 @@ const ModalEditCategory = ({ onClose = () => {}, id }) => {
   };
   const onSubmit = (values, e) => {
     e.preventDefault();
-    putCategory(values, id);
+    putDataAdmin(`category/${id}`, values);
   };
   useEffect(() => {
     handleGetCategory();
