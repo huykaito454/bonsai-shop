@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { getDataAdmin, postDataAdmin } from "../../../http/httpHandle";
+import { getDataAdmin, postDataProductAdmin } from "../../../http/httpHandle";
 
 const ModalCreateProduct = ({ onClose = () => {} }) => {
   return (
@@ -28,17 +28,11 @@ const FormCreateProduct = () => {
     const data = await getDataAdmin("category");
     setCategory(data);
   };
-  const handleFile = (data) => {
-    const file = data.image[0];
-    const formData = new FormData();
-    return formData.append("image", file, file.name);
-    // return URL.createObjectURL(file);
-  };
   const onSubmit = (values, e) => {
     e.preventDefault();
-    console.log(values);
-    const image = new FormData(handleFile(values));
-    const newData = {
+    const file = new FormData();
+    file.append("file", values.file[0]);
+    const product = {
       name: values.name,
       description: values.description,
       information: values.information,
@@ -46,10 +40,14 @@ const FormCreateProduct = () => {
       price: values.price,
       quantitySold: values.quantitySold,
       quantityStock: values.quantityStock,
-      image: image,
     };
-    console.log(newData);
-    postDataAdmin("product", newData);
+    postDataProductAdmin("product", file, {
+      params: { product: product, file: file },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
   };
   useEffect(() => {
     handleGetAllCategory();
@@ -133,7 +131,7 @@ const FormCreateProduct = () => {
         <br></br>
         <input
           type="file"
-          {...register("image")}
+          {...register("file")}
           className="p-3 w-full outline-none border focus:border-admin mt-2"
         />
       </div>

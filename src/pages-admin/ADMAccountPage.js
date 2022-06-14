@@ -12,7 +12,8 @@ const ADMAccountPage = () => {
   const [idFind, setIdFind] = useState();
   const [selectValue, setSelectValue] = useState(null);
   const handleGetAllAccount = async () => {
-    const data = await getDataAdmin("account");
+    const getData = await getDataAdmin("account");
+    const data = getData.data.list;
     if (selectValue) {
       const dataSortByRole = data.filter((item) => {
         const dataRole = item.roles.filter((item) => {
