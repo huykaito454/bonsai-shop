@@ -16,12 +16,12 @@ const HomePage = () => {
   return (
     <>
       <section className="product page-container w-full mb-10 px-10">
-        <h1 className="text-5xl font-semibold mb-10">Ready to Ship</h1>
-        <ProductList></ProductList>
+        <h1 className="text-5xl font-semibold mb-10">New Release</h1>
+        <ProductList type={"new-release"}></ProductList>
       </section>
       <section className="product page-container w-full mb-10 px-10">
         <h1 className="text-5xl font-semibold mb-10">Top Seller</h1>
-        <ProductList></ProductList>
+        <ProductList type={"top-seller"}></ProductList>
       </section>
       {/* <section className="product page-container w-full mb-10 px-10">
         <h1 className="text-5xl font-semibold mb-10">Shop the Look</h1>

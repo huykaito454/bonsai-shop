@@ -1,13 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOpenAds } from "../../contexts/openAdsContext";
 import { NavLink } from "react-router-dom";
 import ModalAdvanced from "../modal/ModalAdvanced";
+import { getGuestData } from "../../http/httpHandle";
 
 const Header = () => {
   const { open } = useOpenAds();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const [categories, setCategories] = useState([]);
+  const [topProduct, setTopProduct] = useState([]);
+  const handleGetAccount = async () => {
+    const data = await getGuestData("categories");
+    setCategories(data.data);
+  };
+  const handleGetTop = async () => {
+    const data = await getGuestData("top-seller", 1, 5);
+    setTopProduct(data.data);
+  };
+  const handleOpenMenu = () => {
+    const shop = document.getElementById("shop");
+    const menu = document.getElementById("menu-dropdown");
+    shop.addEventListener("click", () => {
+      menu.classList.toggle("invisible");
+      menu.classList.toggle("visible");
+    });
+    document.addEventListener("click", function (event) {
+      if (
+        !shop.contains(event.target) &&
+        !event.target.matches("#menu-dropdown")
+      ) {
+        menu.classList.remove("visible");
+        menu.classList.add("invisible");
+      }
+    });
+  };
+  useEffect(() => {
+    handleGetAccount();
+    handleGetTop();
+    handleOpenMenu();
+    return () => {
+      window.removeEventListener("click", handleOpenMenu());
+    };
+  }, []);
   return (
     <header
       className="header page-container w-full bg-white px-10 bg-cover bg-no-repeat relative mb-10"
@@ -29,15 +65,9 @@ const Header = () => {
           </NavLink>
         </div>
         <div className="main-menu w-[65%] flex items-center justify-start mt-3 ">
-          <NavLink to={"/product"} className="mr-10 cursor-pointer">
+          <p className="mr-10 cursor-pointer" id="shop">
             Shop
-          </NavLink>
-          <NavLink to={"/other-product"} className="mr-10 cursor-pointer">
-            Other
-          </NavLink>
-          <NavLink to={"/new-release"} className="mr-10 cursor-pointer">
-            New Release
-          </NavLink>
+          </p>
           <NavLink to={"/contact"} className="mr-10 cursor-pointer">
             Contact
           </NavLink>
@@ -91,6 +121,47 @@ const Header = () => {
           </div>
         </div>
       </div>
+      <div
+        className="w-[94.5%] py-6 px-6 bg-[#f4f0e8] mt-4 absolute z-40 flex justify-between invisible"
+        id="menu-dropdown"
+      >
+        <div className="flex flex-col w-[25%]">
+          <span className="mb-4 mt-2 text-sm">All Category</span>
+          {categories.length > 0 &&
+            categories.map((item) => (
+              <span
+                key={item.id}
+                className="font-semibold my-2 cursor-pointer"
+                onClick={() => {
+                  navigate(`product/${item.id}`);
+                  window.location.reload(false);
+                }}
+              >
+                {item.name}
+              </span>
+            ))}
+        </div>
+        <div className="w-[70%]">
+          <div className="mb-4 mt-2 text-sm">Recommend</div>
+          <div className="grid grid-cols-4 gap-4 ">
+            {topProduct.length > 0 &&
+              topProduct.slice(0, 4).map((item) => (
+                <div
+                  key={item.id}
+                  className=" cursor-pointer"
+                  onClick={() => navigate(`/product-details/${item.id}`)}
+                >
+                  <img
+                    src={`data:image/png;base64, ${item.image}`}
+                    alt=""
+                    className="w-full object-cover mb-2 "
+                  />
+                  <span className=" font-semibold text-sm">{item.name}</span>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
       {open && (
         <div className="home-decs absolute top-[53%] -translate-y-2/4">
           <p className=" text-6xl font-semibold">Plants Make</p>
@@ -100,7 +171,7 @@ const Header = () => {
             it connects you to nature and can boost your mood.
           </p>
           <button
-            onClick={() => navigate("/product")}
+            onClick={() => navigate(`product/${categories[0].id}`)}
             className="py-4 px-6 bg-primary text-white font-bold rounded-sm "
           >
             Shop Easy-Care Plants

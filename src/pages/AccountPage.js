@@ -1,15 +1,25 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getData } from "../http/httpHandle";
+import { useForm } from "react-hook-form";
 
 const AccountPage = () => {
   const [choice, setChoice] = useState("accountDetails");
+  const [account, setAccount] = useState([]);
   const navigate = useNavigate();
   const handleSignOut = () => {
     localStorage.clear();
     navigate("/");
     window.location.reload(false);
   };
+  const handleGetAccount = async () => {
+    const data = await getData("account/account_detail");
+    setAccount(data.data);
+  };
+  useEffect(() => {
+    handleGetAccount();
+  }, []);
   return (
     <div className="w-full page-container p-10 flex items-start justify-between">
       <div className="account-menu flex flex-col w-[20%]">
@@ -30,7 +40,7 @@ const AccountPage = () => {
         </p>
       </div>
       <div className="flex-1 shrink-0 flex flex-col">
-        <AccountDetails open={choice}></AccountDetails>
+        <AccountDetails account={account} open={choice}></AccountDetails>
         <OrderHistory open={choice}></OrderHistory>
       </div>
     </div>
@@ -91,7 +101,18 @@ const OrderHistory = ({ open = "" }) => {
     </div>
   );
 };
-const AccountDetails = ({ open }) => {
+const AccountDetails = ({ open, account }) => {
+  const { register, handleSubmit, setValue } = useForm({
+    defaultValues: account,
+  });
+  const handleSetDefaultValue = (data) => {
+    for (const [key, value] of Object.entries(data)) {
+      setValue(key, value);
+    }
+  };
+  useEffect(() => {
+    handleSetDefaultValue(account);
+  }, [account]);
   return (
     <div
       className={`account-content flex-1 shrink-0 ${
@@ -107,6 +128,7 @@ const AccountDetails = ({ open }) => {
           <br></br>
           <input
             type="text"
+            {...register("firstName")}
             className="p-3 w-full outline-none border focus:border-primary mt-2"
           />
         </div>
@@ -120,6 +142,7 @@ const AccountDetails = ({ open }) => {
           <br></br>
           <input
             type="text"
+            {...register("lastName")}
             className="p-3 w-full outline-none border focus:border-primary mt-2"
           />
         </div>
@@ -133,19 +156,7 @@ const AccountDetails = ({ open }) => {
           <br></br>
           <input
             type="text"
-            className="p-3 w-full outline-none border focus:border-primary mt-2"
-          />
-        </div>
-        <div className="mb-5">
-          <label
-            htmlFor=""
-            className=" text-gray-500 text-sm mb-5 font-semibold"
-          >
-            PASSWORD
-          </label>
-          <br></br>
-          <input
-            type="password"
+            {...register("email")}
             className="p-3 w-full outline-none border focus:border-primary mt-2"
           />
         </div>
@@ -159,6 +170,7 @@ const AccountDetails = ({ open }) => {
           <br></br>
           <input
             type="text"
+            {...register("phone")}
             className="p-3 w-full outline-none border focus:border-primary mt-2"
           />
         </div>
@@ -172,6 +184,7 @@ const AccountDetails = ({ open }) => {
           <br></br>
           <input
             type="text"
+            {...register("address")}
             className="p-3 w-full outline-none border focus:border-primary mt-2"
           />
         </div>

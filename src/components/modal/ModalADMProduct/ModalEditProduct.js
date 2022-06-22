@@ -50,6 +50,7 @@ const ModalEditProduct = ({ onClose = () => {}, id }) => {
       information: values.information,
       category: values.category.id,
       price: values.price,
+      image: "",
       quantitySold: values.quantitySold,
       quantityStock: values.quantityStock,
     };

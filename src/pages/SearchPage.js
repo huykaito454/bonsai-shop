@@ -14,6 +14,7 @@ const SearchPage = () => {
         <button className="button w-[10%]">Search Now</button>
       </div>
       <div className="grid grid-cols-4 gap-14">
+        {/* <ProductCard></ProductCard>
         <ProductCard></ProductCard>
         <ProductCard></ProductCard>
         <ProductCard></ProductCard>
@@ -23,8 +24,7 @@ const SearchPage = () => {
         <ProductCard></ProductCard>
         <ProductCard></ProductCard>
         <ProductCard></ProductCard>
-        <ProductCard></ProductCard>
-        <ProductCard></ProductCard>
+        <ProductCard></ProductCard> */}
       </div>
     </div>
   );

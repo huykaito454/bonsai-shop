@@ -6,8 +6,8 @@ const ContactPage = () => {
       <p className=" text-gray-600 mb-5 font-semibold">LOCATIONS</p>
       <h1 className="text-6xl font-semibold w-[70%] mb-5">Store Locations</h1>
       <StoreAddresses
-        city={"California"}
-        address={"Los Angeles, West Hollywood 8125 W 3rd Street"}
+        city={"Viet Nam"}
+        address={"Thu Duc District, Ho Chi Minh City"}
       ></StoreAddresses>
     </div>
   );

@@ -4,10 +4,10 @@ import Blog from "../components/layout/Blog";
 const AboutUsPage = () => {
   return (
     <>
-      <GiftingIntro></GiftingIntro>
+      <div className="page-container mb-10 border-t-2 w-full"></div>
       <Blog
         reverse={true}
-        title={"Step 1: Pick Your Plant"}
+        title={"Pick Your Plant"}
         content={
           "From non-toxic plants for pet-friendly spaces to low-light tolerant plants for home offices, we have plants and planters that suit your unique needs."
         }
@@ -15,63 +15,47 @@ const AboutUsPage = () => {
           "https://cdn.shopify.com/s/files/1/0150/6262/files/cream-lineup_720x.jpg?v=1622053587"
         }
       ></Blog>
-      <Blog
-        reverse={true}
-        title={"Step 2: Tell Us Where To Ship"}
-        content={
-          "Shipping to multiple locations? We’ve got you covered. Complete the form to deliver greenery to all the addresses on your list."
-        }
-        url={
-          "https://cdn.shopify.com/s/files/1/0150/6262/files/19126-01-394_v2_720x.jpg?v=1615990979"
-        }
-      ></Blog>
+      <YourTeam></YourTeam>
     </>
   );
 };
-const GiftingIntro = () => {
+const YourTeam = () => {
   return (
-    <div className="w-full page-container p-10 mb-20">
-      <h1 className="text-5xl font-semibold mb-10">
-        With so many corporate gifting choices, why gift plants?
+    <div className="w-full page-container mb-20 px-10">
+      <h1 className="text-3xl mb-10 font-semibold text-primary uppercase text-center">
+        Your team
       </h1>
-      <div className="grid grid-cols-3 gap-10">
-        <GiftingIntroItem
+      <div className="grid grid-cols-3 gap-8 px-60">
+        <Author
+          name={"Nguyen Trong Huy"}
           url={
-            "https://cdn.shopify.com/s/files/1/0150/6262/files/Enjoy_Monthly_Guaranteed_180x.png?v=1634449912"
+            "https://64.media.tumblr.com/2b5ec39201589b9f7a4dca4e8c6c45f7/929b46ee2567d435-60/s2048x3072/8bc3955f51d1c1f203509f7cd5a3530f9ec7a141.jpg"
           }
-          title={"Plants Are Made To Last"}
-          content={
-            "They’re a meaningful gift that continues to grow and provide beauty for many years to come. Unlike other gifts that eventually expire, live plants only get better with time."
-          }
-        ></GiftingIntroItem>
-        <GiftingIntroItem
+        ></Author>
+        <Author
+          name={"Pham Thanh Loi"}
           url={
-            "https://cdn.shopify.com/s/files/1/0150/6262/files/Choose_Your_Plan_180x.png?v=1634449912"
+            "https://64.media.tumblr.com/6304bada43578595ce3ee41d7b2aa61e/929b46ee2567d435-32/s1280x1920/678d38ade6e572bbf876aa98898e42f879889e87.jpg"
           }
-          title={"Plants Are Always Inclusive"}
-          content={
-            "No need to worry about food allergies or merch sizes. And you don't have to be a plant aficionado to enjoy a plant. We recommend easy-care varieties that work for anyone’s space, from low-light to pet-friendly."
-          }
-        ></GiftingIntroItem>
-        <GiftingIntroItem
+        ></Author>
+        <Author
+          name={"Nguyen Minh Nhat"}
           url={
-            "https://cdn.shopify.com/s/files/1/0150/6262/files/Gift_a_Subscription_180x.png?v=1634449912"
+            "https://64.media.tumblr.com/60cef3e5b0d52f3f5572c2dee2e93aa2/2cfce9ca1e40c65f-90/s1280x1920/5fd29f20d682089943d076a2f4608800e49cd06d.jpg"
           }
-          title={"Plants Make Us Happier"}
-          content={
-            "They boost our spirits and enhance our environments. Studies show indoor plants can reduce mental fatigue and stress, and increase relaxation and self-esteem."
-          }
-        ></GiftingIntroItem>
+        ></Author>
       </div>
     </div>
   );
 };
-const GiftingIntroItem = ({ url, title, content }) => {
+const Author = ({ name, url }) => {
   return (
-    <div className="flex flex-col">
-      <img src={url} alt="" className="w-10 h-10 mb-5" />
-      <h1 className="text-4xl font-semibold mb-5">{title}</h1>
-      <p className="text-base mt-auto ">{content}</p>
+    <div className="flex flex-col items-center">
+      <div className="rounded-full overflow-hidden mb-2">
+        <img src={url} alt="" className="w-full object-cover " />
+      </div>
+      <span className="text-center font-semibold text-xl">{name}</span>
+      <span className="text-center  text-base">Developer</span>
     </div>
   );
 };

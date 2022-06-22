@@ -2,13 +2,13 @@ import React from "react";
 
 const Blog = ({ title, content, url, reverse }) => {
   return (
-    <div className="w-full page-container mb-20 px-20">
+    <div className="w-full page-container mb-20 px-10">
       <div
         className={`flex items-center justify-between ${
           reverse ? "flex-row-reverse" : ""
         } `}
       >
-        <div className="blog-content w-[35%] mx-10">
+        <div className="blog-content w-[45%] mx-10">
           <h1 className="text-4xl font-semibold mb-8">{title}</h1>
           <p className=" text-base mb-10">{content}</p>
         </div>

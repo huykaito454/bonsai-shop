@@ -3,7 +3,7 @@ import ModalCreateProduct from "../components/modal/ModalADMProduct/ModalCreateP
 import ModalEditProduct from "../components/modal/ModalADMProduct/ModalEditProduct";
 import ModalInforProduct from "../components/modal/ModalADMProduct/ModalInforProduct";
 import ModalAdvanced from "../components/modal/ModalAdvanced";
-import { getDataAdmin } from "../http/httpHandle";
+import { deleteDataAdmin, getDataAdmin } from "../http/httpHandle";
 
 const ADMProductPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -14,7 +14,12 @@ const ADMProductPage = () => {
     const getData = await getDataAdmin("product");
     const data = getData.data.list;
     setProduct(data);
-    console.log(data);
+  };
+  const handleDeleteProduct = (id) => {
+    let confirmAction = window.confirm("Are you sure to delete this product?");
+    if (confirmAction) {
+      deleteDataAdmin(`product/${id}`);
+    } else return;
   };
   useEffect(() => {
     handleGetAllProduct();
@@ -101,6 +106,7 @@ const ADMProductPage = () => {
                     setOpenModal={setOpenModal}
                     setChoice={setChoice}
                     setIdProduct={setIdProduct}
+                    handleDeleteProduct={handleDeleteProduct}
                   ></TableProduct>
                 ))}
             </tbody>
@@ -135,6 +141,7 @@ const TableProduct = ({
   setOpenModal = () => {},
   setIdProduct = () => {},
   setChoice = () => {},
+  handleDeleteProduct = () => {},
 }) => {
   return (
     <tr className="bg-white border-b text-gray-700 border-admin">
@@ -172,7 +179,12 @@ const TableProduct = ({
         >
           <i className="fas fa-edit"></i>
         </button>
-        <button className="button-admin py-2 px-4 rounded-md bg-red-500">
+        <button
+          className="button-admin py-2 px-4 rounded-md bg-red-500"
+          onClick={() => {
+            handleDeleteProduct(item.id);
+          }}
+        >
           <i className="fas fa-trash-alt"></i>
         </button>
       </td>

@@ -101,31 +101,8 @@ export default function AppRouter() {
       >
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route
-          path="/product"
-          element={
-            <ProductPage
-              title="All Plant"
-              desc="Your plants will arrive in happy, healthy condition. If not, we replace them for free under our 30-Day Guarantee."
-            ></ProductPage>
-          }
-        ></Route>
-        <Route
-          path="/other-product"
-          element={
-            <ProductPage
-              title="Other Product"
-              desc="Shop our in-stock favorites, ready to ship and brighten up your home."
-            ></ProductPage>
-          }
-        ></Route>
-        <Route
-          path="/new-release"
-          element={
-            <ProductPage
-              title="New Release"
-              desc="New plants, new gifts, new sill, new you."
-            ></ProductPage>
-          }
+          path="/product/:categoryId"
+          element={<ProductPage></ProductPage>}
         ></Route>
         <Route
           path="/account"
@@ -140,7 +117,7 @@ export default function AppRouter() {
         <Route path="/login" element={<LoginPage></LoginPage>}></Route>
         <Route path="/register" element={<RegisterPage></RegisterPage>}></Route>
         <Route
-          path="/product/:productId"
+          path="/product-details/:productId"
           element={<ProductDetails></ProductDetails>}
         ></Route>
         <Route path="/search" element={<SearchPage></SearchPage>}></Route>
