@@ -141,6 +141,40 @@ export const putDataProductAdmin = async (type, data, config) => {
     alert(error.response.data.message);
   }
 };
+export const cancelOrderAdmin = async (type, data, id) => {
+  try {
+    const res = await axios.put(API.getAPIAdmin(type), data, {
+      params: { id_order: id },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    alert(res.data.message);
+    window.location.reload(false);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.message);
+  }
+};
+export const assignShipper = async (type, data, idShipper, idOrder) => {
+  try {
+    const res = await axios.put(API.getAPIAdmin(type), data, {
+      params: { id_shipper: idShipper, id_order: idOrder },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    alert(res.data.message);
+    window.location.reload(false);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.message);
+  }
+};
 export const putDataAdmin = async (type, data) => {
   try {
     const res = await axios.put(API.getAPIAdmin(type), data, config);

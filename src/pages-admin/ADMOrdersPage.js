@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import ModalInforOrder from "../components/modal/ModalADMOrder/ModalInforOrder";
 import ModalShipOrder from "../components/modal/ModalADMOrder/ModalShipOrder";
 import ModalAdvanced from "../components/modal/ModalAdvanced";
-import { getDataAdmin } from "../http/httpHandle";
+import { cancelOrderAdmin, getDataAdmin } from "../http/httpHandle";
 
 const ADMOrdersPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -12,8 +12,14 @@ const ADMOrdersPage = () => {
   const [order, setOrder] = useState([]);
   const handleGetOrder = async () => {
     const data = await getDataAdmin("order");
+    console.log(data.data);
     setOrder(data.data.list);
-    console.log(data.data.list);
+  };
+  const handleCancelOrder = async (id) => {
+    let confirmAction = window.confirm("Are you sure to cancel this order?");
+    if (confirmAction) {
+      await cancelOrderAdmin(`order/cancel-order`, null, id);
+    } else return;
   };
   useEffect(() => {
     handleGetOrder();
@@ -63,10 +69,16 @@ const ADMOrdersPage = () => {
                   Phone
                 </th>
                 <th scope="col" className="px-6 py-3">
+                  Address
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Total Money
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Status
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Shipper
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Action
@@ -82,6 +94,7 @@ const ADMOrdersPage = () => {
                     setChoice={setChoice}
                     setIdOrder={setIdOrder}
                     setOpenModal={setOpenModal}
+                    handleCancelOrder={handleCancelOrder}
                   ></TableOrders>
                 ))}
             </tbody>
@@ -96,7 +109,10 @@ const ADMOrdersPage = () => {
           ></ModalInforOrder>
         )}
         {choice === "ship" && (
-          <ModalShipOrder onClose={() => setOpenModal(false)}></ModalShipOrder>
+          <ModalShipOrder
+            onClose={() => setOpenModal(false)}
+            id={idOrder}
+          ></ModalShipOrder>
         )}
       </ModalAdvanced>
     </>
@@ -107,6 +123,7 @@ const TableOrders = ({
   setOpenModal = () => {},
   setChoice = () => {},
   setIdOrder = () => {},
+  handleCancelOrder = () => {},
 }) => {
   return (
     <tr className="bg-white border-b text-gray-700 border-admin">
@@ -114,8 +131,12 @@ const TableOrders = ({
       <td className="px-6 py-4">{item.id}</td>
       <td className="px-6 py-4">{item.receiverName}</td>
       <td className="px-6 py-4">{item.receiverPhone}</td>
+      <td className="px-6 py-4">{item.address}</td>
       <td className="px-6 py-4">{item.totalMoney}</td>
       <td className="px-6 py-4">{item.status}</td>
+      <td className="px-6 py-4">
+        {item?.shipper?.firstName} {item?.shipper?.lastName}
+      </td>
       <td className="px-6 py-4 flex items-center justify-between">
         <button
           className="button-admin py-2 px-4 rounded-md bg-yellow-500"
@@ -132,11 +153,17 @@ const TableOrders = ({
           onClick={() => {
             setOpenModal(true);
             setChoice("ship");
+            setIdOrder(item.id);
           }}
         >
           <i className="fas fa-truck"></i>
         </button>
-        <button className="button-admin py-2 px-4 rounded-md bg-red-500">
+        <button
+          className="button-admin py-2 px-4 rounded-md bg-red-500"
+          onClick={() => {
+            handleCancelOrder(item.id);
+          }}
+        >
           <i className="fas fa-trash-alt"></i>
         </button>
       </td>

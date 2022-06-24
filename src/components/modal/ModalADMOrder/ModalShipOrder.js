@@ -1,6 +1,24 @@
-import React from "react";
-
-const ModalShipOrder = ({ onClose = () => {} }) => {
+import React, { useEffect, useState } from "react";
+import { assignShipper, getDataAdmin } from "../../../http/httpHandle";
+import { useForm } from "react-hook-form";
+const ModalShipOrder = ({ onClose = () => {}, id }) => {
+  const [shipper, setShipper] = useState([]);
+  const { register, handleSubmit } = useForm();
+  const handleGetShipper = async () => {
+    const data = await getDataAdmin(`account/shipper`);
+    console.log(data.data);
+    setShipper(data.data);
+  };
+  const onSubmit = async (values) => {
+    if (values.id_shipper === " ") {
+      alert("Empty assignment");
+    } else {
+      await assignShipper("order/assignment", null, values.id_shipper, id);
+    }
+  };
+  useEffect(() => {
+    handleGetShipper();
+  }, []);
   return (
     <div className="bg-white p-10 rounded-md w-full max-w-[1200px] max-h-[800px] overflow-scroll">
       <span
@@ -15,33 +33,22 @@ const ModalShipOrder = ({ onClose = () => {} }) => {
           ASSIGN SHIPPER
         </div>
         <div className="font-body2">
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className=" flex flex-col">
-              <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">ID ORDER : </span>
-                <span>123</span>
-              </div>
-              <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">NAME : </span>
-                <span>Huy</span>
-              </div>
-              <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">PHONE : </span>
-                <span>0937899623</span>
-              </div>
-              <div className="w-full flex items-start mb-5">
-                <span className="mr-5 w-[30%]">ADDRESS : </span>
-                <span className="w-[60%]">84/4 Đường số 13 Linh Xuân Thủ </span>
-              </div>
-              <div className="border mb-5"></div>
-              <div className="w-full flex items-center mb-5">
-                <label className="mr-5">ROLE</label>
+              <div className="w-full flex flex-col items-start mb-2">
+                <label className="mr-5">ASSIGN</label>
                 <br></br>
-                <select className="outline-none border px-4 py-2 mt-2">
-                  <option>Choose Shipper</option>
-                  <option value="">Shipper 1</option>
-                  <option value="">Shipper 2</option>
-                  <option value="">Shipper 3</option>
+                <select
+                  className="outline-none w-full border px-4 py-2 "
+                  {...register("id_shipper")}
+                >
+                  <option value=" ">Choose Shipper</option>
+                  {shipper.length > 0 &&
+                    shipper.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.firstName} {item.lastName}
+                      </option>
+                    ))}
                 </select>
               </div>
               <button className="button w-full mt-5 bg-admin">Confirm</button>

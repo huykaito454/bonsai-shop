@@ -5,7 +5,6 @@ const ModalInforOrder = ({ onClose = () => {}, id }) => {
   const [order, setOrder] = useState([]);
   const handleGetOrder = async () => {
     const data = await getDataAdmin(`order/${id}`);
-    console.log(data.data);
     setOrder(data.data);
   };
   useEffect(() => {
@@ -28,55 +27,56 @@ const ModalInforOrder = ({ onClose = () => {}, id }) => {
           <div className="flex items-start justify-between w-full">
             <div className=" flex flex-col">
               <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">FIRST NAME : </span>
-                <span>Nguyễn Trọng</span>
+                <span className="mr-5 w-[40%]">FULL NAME : </span>
+                <span>{order?.receiverName}</span>
               </div>
               <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">LAST NAME : </span>
-                <span>Huy</span>
+                <span className="mr-5 w-[40%]">PHONE : </span>
+                <span>{order?.receiverPhone}</span>
               </div>
               <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">PHONE : </span>
-                <span>0937899623</span>
+                <span className="mr-5 w-[40%]">ADDRESS : </span>
+                <span className="w-[50%]">{order?.address}</span>
               </div>
               <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">ADDRESS : </span>
-                <span className="w-[60%]">84/4 Đường số 13 Linh Xuân Thủ </span>
+                <span className="mr-5 w-[40%]">ORDER DATE : </span>
+                <span>{order.orderDate}</span>
               </div>
               <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">TIME ORDER : </span>
-                <span>8:31 | 8-1-2022</span>
+                <span className="mr-5 w-[40%]">DELIVERY DATE : </span>
+                <span>{order?.deliveryDate}</span>
+              </div>
+              <div className="w-full flex items-center mb-5">
+                <span className="mr-5 w-[40%]">RECEIVE DATE : </span>
+                <span>{order?.receiveDate}</span>
               </div>
               <div className="border mb-5"></div>
               <div className="w-full flex items-start mb-5">
-                <span className="mr-5 w-[30%]">PRODUCTS : </span>
+                <span className="mr-5 w-[40%]">PRODUCTS : </span>
                 <div className="flex flex-col">
-                  <span>Dracaena Marginata : x2</span>
-                  <span>Dracaena Marginata : x2</span>
+                  {order?.orderDetails?.length > 0 &&
+                    order.orderDetails.map((item) => (
+                      <span>
+                        {item.product.name} : x{item.quantity}
+                      </span>
+                    ))}
                 </div>
               </div>
               <div className="border mb-5"></div>
               <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">PAYMENT : </span>
-                <span>COD</span>
+                <span className="mr-5 w-[40%]">SHIPPER : </span>
+                <span>
+                  {order?.shipper?.firstName} {order?.shipper?.lastName}
+                </span>
               </div>
               <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">PAYMENT STATUS: </span>
-                <span>Unpaid</span>
-              </div>
-              <div className="border mb-5"></div>
-              <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">STATUS : </span>
-                <span>Unconfirmed</span>
-              </div>
-              <div className="w-full flex items-center mb-5">
-                <span className="mr-5 w-[30%]">POINT: </span>
-                <span className="text-admin font-semibold">190</span>
+                <span className="mr-5 w-[40%]">STATUS : </span>
+                <span>{order?.status}</span>
               </div>
               <div className="w-full flex items-center">
-                <span className="mr-5 w-[30%]">TOTAL : </span>
+                <span className="mr-5 w-[40%]">TOTAL : </span>
                 <span className="text-2xl text-red-500 font-semibold">
-                  1900 $
+                  {order?.totalMoney} $
                 </span>
               </div>
             </div>
