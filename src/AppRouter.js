@@ -25,6 +25,7 @@ const AccountPage = lazy(() => import("./pages/AccountPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const AboutUsPage = lazy(() => import("./pages/AboutUsPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 
 //Shipper
 const SOrdersPage = lazy(() => import("./pages-shipper/SOrdersPage"));
@@ -130,6 +131,16 @@ export default function AppRouter() {
           }
         ></Route>
       </Route>
+      <Route
+        path="/checkout"
+        element={
+          token !== null ? (
+            <CheckoutPage></CheckoutPage>
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      ></Route>
       <Route
         path="/shipper"
         element={

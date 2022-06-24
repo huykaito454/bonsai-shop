@@ -1,11 +1,23 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import ModalInforOrder from "../components/modal/ModalADMOrder/ModalInforOrder";
 import ModalShipOrder from "../components/modal/ModalADMOrder/ModalShipOrder";
 import ModalAdvanced from "../components/modal/ModalAdvanced";
+import { getDataAdmin } from "../http/httpHandle";
 
 const ADMOrdersPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [choice, setChoice] = useState("");
+  const [idOrder, setIdOrder] = useState();
+  const [order, setOrder] = useState([]);
+  const handleGetOrder = async () => {
+    const data = await getDataAdmin("order");
+    setOrder(data.data.list);
+    console.log(data.data.list);
+  };
+  useEffect(() => {
+    handleGetOrder();
+  }, []);
   return (
     <>
       <div className="h-[80px] w-full"></div>
@@ -39,22 +51,19 @@ const ADMOrdersPage = () => {
             <thead className="text-xs text-white uppercase bg-admin">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  Date Start
+                  Order Date
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  ID Order
+                  ID
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Full Name
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Last Name
+                  Phone
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Email
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Amount Price
+                  Total Money
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Status
@@ -65,38 +74,16 @@ const ADMOrdersPage = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b text-gray-700 border-admin">
-                <td className="px-6 py-4">1-1-2001</td>
-                <td className="px-6 py-4">1</td>
-                <td className="px-6 py-4">Nguyen Trong</td>
-                <td className="px-6 py-4">Huy</td>
-                <td className="px-6 py-4">Email</td>
-                <td className="px-6 py-4">500</td>
-                <td className="px-6 py-4">Unconfirmed</td>
-                <td className="px-6 py-4 flex items-center justify-between">
-                  <button
-                    className="button-admin py-2 px-4 rounded-md bg-yellow-500"
-                    onClick={() => {
-                      setOpenModal(true);
-                      setChoice("info");
-                    }}
-                  >
-                    <i className="fas fa-info-circle"></i>
-                  </button>
-                  <button
-                    className="button-admin py-2 px-4 rounded-md"
-                    onClick={() => {
-                      setOpenModal(true);
-                      setChoice("ship");
-                    }}
-                  >
-                    <i className="fas fa-truck"></i>
-                  </button>
-                  <button className="button-admin py-2 px-4 rounded-md bg-red-500">
-                    <i className="fas fa-trash-alt"></i>
-                  </button>
-                </td>
-              </tr>
+              {order.length > 0 &&
+                order.map((item) => (
+                  <TableOrders
+                    key={item.id}
+                    item={item}
+                    setChoice={setChoice}
+                    setIdOrder={setIdOrder}
+                    setOpenModal={setOpenModal}
+                  ></TableOrders>
+                ))}
             </tbody>
           </table>
         </div>
@@ -105,6 +92,7 @@ const ADMOrdersPage = () => {
         {choice === "info" && (
           <ModalInforOrder
             onClose={() => setOpenModal(false)}
+            id={idOrder}
           ></ModalInforOrder>
         )}
         {choice === "ship" && (
@@ -114,5 +102,45 @@ const ADMOrdersPage = () => {
     </>
   );
 };
-
+const TableOrders = ({
+  item,
+  setOpenModal = () => {},
+  setChoice = () => {},
+  setIdOrder = () => {},
+}) => {
+  return (
+    <tr className="bg-white border-b text-gray-700 border-admin">
+      <td className="px-6 py-4">{item.orderDate}</td>
+      <td className="px-6 py-4">{item.id}</td>
+      <td className="px-6 py-4">{item.receiverName}</td>
+      <td className="px-6 py-4">{item.receiverPhone}</td>
+      <td className="px-6 py-4">{item.totalMoney}</td>
+      <td className="px-6 py-4">{item.status}</td>
+      <td className="px-6 py-4 flex items-center justify-between">
+        <button
+          className="button-admin py-2 px-4 rounded-md bg-yellow-500"
+          onClick={() => {
+            setOpenModal(true);
+            setChoice("info");
+            setIdOrder(item.id);
+          }}
+        >
+          <i className="fas fa-info-circle"></i>
+        </button>
+        <button
+          className="button-admin py-2 px-4 rounded-md"
+          onClick={() => {
+            setOpenModal(true);
+            setChoice("ship");
+          }}
+        >
+          <i className="fas fa-truck"></i>
+        </button>
+        <button className="button-admin py-2 px-4 rounded-md bg-red-500">
+          <i className="fas fa-trash-alt"></i>
+        </button>
+      </td>
+    </tr>
+  );
+};
 export default ADMOrdersPage;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { API, config } from "../config";
 //Handle Guest
 export const getGuestData = async (type, page = 1, limit = 12) => {
@@ -21,6 +22,16 @@ export const getData = async (type) => {
     return res.data;
   } catch (error) {
     console.log(error);
+  }
+};
+export const paymentData = async (type, data) => {
+  try {
+    const res = await axios.post(API.getAPI(type), data, config);
+    alert(res.data.message);
+    window.location.reload(false);
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.message);
   }
 };
 export const getUserData = async (type, page = 1, limit = 10) => {
@@ -47,9 +58,42 @@ export const addToCart = async (type, data, productId) => {
       },
     });
     alert(res.data.message);
+    window.location.reload(false);
     return res.data;
   } catch (error) {
     console.log(error);
+    alert(error.response.data.message);
+  }
+};
+export const putToCart = async (type, data, productId, quantity) => {
+  try {
+    const res = await axios.put(API.getAPI(type), data, {
+      params: { product_id: productId, quantity: quantity },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    alert(res.data.message);
+    window.location.reload(false);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.message);
+  }
+};
+export const removeToCart = async (type, productId) => {
+  try {
+    const res = await axios.delete(API.getAPI(type), {
+      params: { product_id: productId },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    alert(res.data.message);
+    window.location.reload(false);
+  } catch (error) {
     alert(error.response.data.message);
   }
 };

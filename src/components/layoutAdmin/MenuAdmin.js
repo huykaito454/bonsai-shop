@@ -15,7 +15,7 @@ const MenuAdmin = () => {
             className="w-full h-full object-cover rounded-full"
           />
         </div>
-        <p className=" text-3xl">The Sill</p>
+        <p className=" text-3xl">NHL</p>
       </NavLink>
       <div className="menu-button flex flex-col items-start mb-4 transition-all text-white">
         <NavLink

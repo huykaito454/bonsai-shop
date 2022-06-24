@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getDataAdmin } from "../../../http/httpHandle";
 
-const ModalInforOrder = ({ onClose = () => {} }) => {
+const ModalInforOrder = ({ onClose = () => {}, id }) => {
+  const [order, setOrder] = useState([]);
+  const handleGetOrder = async () => {
+    const data = await getDataAdmin(`order/${id}`);
+    console.log(data.data);
+    setOrder(data.data);
+  };
+  useEffect(() => {
+    handleGetOrder();
+  }, []);
   return (
     <div className="bg-white p-10 rounded-md w-full max-w-[1200px] max-h-[800px] overflow-scroll">
       <span

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOpenAds } from "../../contexts/openAdsContext";
 import { NavLink } from "react-router-dom";
-import ModalAdvanced from "../modal/ModalAdvanced";
-import { getGuestData } from "../../http/httpHandle";
+import { getData, getGuestData } from "../../http/httpHandle";
 
 const Header = () => {
   const { open } = useOpenAds();
@@ -11,9 +10,21 @@ const Header = () => {
   const token = localStorage.getItem("token");
   const [categories, setCategories] = useState([]);
   const [topProduct, setTopProduct] = useState([]);
+  const [quantityCart, setQuantityCart] = useState(0);
   const handleGetAccount = async () => {
     const data = await getGuestData("categories");
     setCategories(data.data);
+  };
+  const handleCart = async () => {
+    if (token !== null) {
+      const data = await getData("cart");
+      let quantity = 0;
+      data.data.forEach((item) => {
+        console.log(item.quantity);
+        quantity = quantity + item.quantity;
+      });
+      setQuantityCart(quantity);
+    } else return;
   };
   const handleGetTop = async () => {
     const data = await getGuestData("top-seller", 1, 5);
@@ -39,6 +50,7 @@ const Header = () => {
   useEffect(() => {
     handleGetAccount();
     handleGetTop();
+    handleCart();
     handleOpenMenu();
     return () => {
       window.removeEventListener("click", handleOpenMenu());
@@ -117,12 +129,12 @@ const Header = () => {
             onClick={() => navigate("/cart")}
           >
             <span>Cart </span>
-            <span>( 0 )</span>
+            <span>( {quantityCart} )</span>
           </div>
         </div>
       </div>
       <div
-        className="w-[94.5%] py-6 px-6 bg-[#f4f0e8] mt-4 absolute z-40 flex justify-between invisible"
+        className="w-[94.5%] py-6 px-6 bg-[#f4f0e8] mt-4 absolute z-40 flex justify-between invisible shadow-lg"
         id="menu-dropdown"
       >
         <div className="flex flex-col w-[25%]">
