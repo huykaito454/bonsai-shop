@@ -58,7 +58,7 @@ const Header = () => {
   }, []);
   return (
     <header
-      className="header page-container w-full bg-white px-10 bg-cover bg-no-repeat relative mb-10"
+      className="header page-container w-full bg-white px-10 bg-cover bg-no-repeat relative mb-10 "
       style={
         open
           ? {

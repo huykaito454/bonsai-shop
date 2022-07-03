@@ -3,6 +3,7 @@ import ModalCreateAccount from "../components/modal/ModalADMAccount/ModalCreateA
 import ModalEditAccount from "../components/modal/ModalADMAccount/ModalEditAccount";
 import ModalInforAccount from "../components/modal/ModalADMAccount/ModalInforAccount";
 import ModalAdvanced from "../components/modal/ModalAdvanced";
+import Paginate from "../components/Paginate/Paginate";
 import { deleteDataAdmin, getDataAdmin } from "../http/httpHandle";
 const ADMAccountPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -10,28 +11,13 @@ const ADMAccountPage = () => {
   const [account, setAccount] = useState([]);
   const [idUser, setIdUser] = useState("");
   const [idFind, setIdFind] = useState();
-  const [selectValue, setSelectValue] = useState(null);
-  const handleGetAllAccount = async () => {
-    const getData = await getDataAdmin("account");
-    const data = getData.data.list;
-    if (selectValue) {
-      const dataSortByRole = data.filter((item) => {
-        const dataRole = item.roles.filter((item) => {
-          return item.id === Number(selectValue);
-        });
-        if (dataRole.length > 0) {
-          return item;
-        }
-      });
-      setAccount(dataSortByRole);
-    } else if (idFind) {
-      const dataFind = data.filter((item) => {
-        return item.id === Number(idFind);
-      });
-      setAccount(dataFind);
-    } else {
-      setAccount(data);
-    }
+  const [nextPage, setNextPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+
+  const handleGetAllAccount = async (nextPage) => {
+    const getData = await getDataAdmin("account", nextPage);
+    setTotalPage(getData.data.totalpage);
+    setAccount(getData.data.list);
   };
   const handleDeleteAccount = (id) => {
     let confirmAction = window.confirm("Are you sure to delete this account?");
@@ -40,8 +26,8 @@ const ADMAccountPage = () => {
     } else return;
   };
   useEffect(() => {
-    handleGetAllAccount();
-  }, [idFind, selectValue]);
+    handleGetAllAccount(nextPage);
+  }, [idFind, nextPage]);
 
   return (
     <>
@@ -63,33 +49,6 @@ const ADMAccountPage = () => {
             >
               <i className="fas fa-plus"></i>
             </button>
-          </div>
-          <div className="flex items-center justify-start">
-            <input
-              type="text"
-              className="outline-none px-2 mr-3 rounded-md py-1 border focus:border-admin"
-              placeholder="Find Account"
-              value={idFind}
-              onChange={(e) => setIdFind(e.target.value)}
-            />
-            <button className="button-admin px-4 py-1 border border-admin">
-              <i className="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
-        <div className="flex justify-between">
-          <div className="flex items-center justify-start">
-            <span className="mr-3">Filter By Role</span>
-            <select
-              className="outline-none border border-adminBorder rounded-md px-2 py-1"
-              defaultValue={selectValue}
-              onChange={(e) => setSelectValue(e.target.value)}
-            >
-              <option value="">All</option>
-              <option value={2}>User</option>
-              <option value={1}>Admin</option>
-              <option value={3}>Shipper</option>
-            </select>
           </div>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-12 mb-5 border  border-b-0 border-admin">
@@ -137,6 +96,12 @@ const ADMAccountPage = () => {
             </tbody>
           </table>
         </div>
+        <Paginate
+          style={{ color: "#8981d8" }}
+          nextPage={nextPage}
+          setNextPage={setNextPage}
+          totalPage={totalPage}
+        ></Paginate>
       </div>
       <ModalAdvanced visible={openModal} onClose={() => setOpenModal(false)}>
         {choice === "new" && (

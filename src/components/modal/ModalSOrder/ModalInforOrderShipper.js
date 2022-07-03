@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getDataAdmin } from "../../../http/httpHandle";
+import { getDataAdmin, getShipperData } from "../../../http/httpHandle";
 
-const ModalInforOrder = ({ onClose = () => {}, id }) => {
+const ModalInforOrderShipper = ({ onClose = () => {}, id }) => {
   const [order, setOrder] = useState([]);
   const handleGetOrder = async () => {
-    const data = await getDataAdmin(`order/${id}`);
+    const data = await getShipperData(`order/${id}`);
     setOrder(data.data);
+    console.log(data);
   };
   useEffect(() => {
     handleGetOrder();
@@ -56,7 +57,7 @@ const ModalInforOrder = ({ onClose = () => {}, id }) => {
                 <div className="flex flex-col">
                   {order?.orderDetails?.length > 0 &&
                     order.orderDetails.map((item) => (
-                      <span key={item.id}>
+                      <span>
                         {item.product.name} : x{item.quantity}
                       </span>
                     ))}
@@ -87,4 +88,4 @@ const ModalInforOrder = ({ onClose = () => {}, id }) => {
   );
 };
 
-export default ModalInforOrder;
+export default ModalInforOrderShipper;
