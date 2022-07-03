@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import ModalInforOrder from "../components/modal/ModalADMOrder/ModalInforOrder";
 import ModalShipOrder from "../components/modal/ModalADMOrder/ModalShipOrder";
 import ModalAdvanced from "../components/modal/ModalAdvanced";
+import Paginate from "../components/Paginate/Paginate";
 import { cancelOrderAdmin, getDataAdmin } from "../http/httpHandle";
 
 const ADMOrdersPage = () => {
@@ -10,9 +11,12 @@ const ADMOrdersPage = () => {
   const [choice, setChoice] = useState("");
   const [idOrder, setIdOrder] = useState();
   const [order, setOrder] = useState([]);
-  const handleGetOrder = async () => {
-    const data = await getDataAdmin("order");
+  const [nextPage, setNextPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const handleGetOrder = async (nextPage) => {
+    const data = await getDataAdmin("order", nextPage);
     console.log(data.data);
+    setTotalPage(data.data.totalpage);
     setOrder(data.data.list);
   };
   const handleCancelOrder = async (id) => {
@@ -22,8 +26,8 @@ const ADMOrdersPage = () => {
     } else return;
   };
   useEffect(() => {
-    handleGetOrder();
-  }, []);
+    handleGetOrder(nextPage);
+  }, [nextPage]);
   return (
     <>
       <div className="h-[80px] w-full"></div>
@@ -32,26 +36,7 @@ const ADMOrdersPage = () => {
           <i className="fas fa-file-alt mr-5 text-4xl"></i>
           ORDERS MANAGEMENT
         </div>
-        <div className="flex justify-between ">
-          <div className="flex items-center justify-start">
-            <select className="outline-none border border-adminBorder rounded-md px-2 py-1">
-              <option>All Status</option>
-              <option value="">Unconfirmed</option>
-              <option value="">Processing</option>
-              <option value="">Successful</option>
-            </select>
-          </div>
-          <div className="flex items-center justify-start">
-            <input
-              type="text"
-              className="outline-none px-2 mr-3 rounded-md py-1 border focus:border-admin"
-              placeholder="Find Order"
-            />
-            <button className="button-admin px-4 py-1 border border-admin">
-              <i className="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
+
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-12 mb-5 border  border-b-0 border-admin">
           <table className="w-full text-sm text-left text-white bg-admin">
             <thead className="text-xs text-white uppercase bg-admin">
@@ -100,6 +85,12 @@ const ADMOrdersPage = () => {
             </tbody>
           </table>
         </div>
+        <Paginate
+          style={{ color: "#8981d8" }}
+          nextPage={nextPage}
+          setNextPage={setNextPage}
+          totalPage={totalPage}
+        ></Paginate>
       </div>
       <ModalAdvanced visible={openModal} onClose={() => setOpenModal(false)}>
         {choice === "info" && (

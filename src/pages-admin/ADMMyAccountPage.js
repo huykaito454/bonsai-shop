@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalAdvanced from "../components/modal/ModalAdvanced";
 import ModalResetPassword from "../components/modal/ModalResetPassword/ModalResetPassword";
+import { getData } from "../http/httpHandle";
 
 const ADMMyAccountPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [choice, setChoice] = useState("");
+  const [account, setAccount] = useState([]);
+  const handleGetAccount = async () => {
+    const data = await getData("account/account_detail");
+    setAccount(data.data);
+    console.log(data);
+  };
+  useEffect(() => {
+    handleGetAccount();
+  }, []);
   return (
     <>
       <div className="h-[80px] w-full"></div>
@@ -17,35 +27,25 @@ const ADMMyAccountPage = () => {
           <div className=" flex flex-col">
             <div className="w-full flex items-center mb-5">
               <span className="mr-5">FIRST NAME : </span>
-              <span>Nguyễn Trọng</span>
+              <span>{account.firstName}</span>
             </div>
             <div className="w-full flex items-center mb-5">
               <span className="mr-5">LAST NAME : </span>
-              <span>Huy</span>
+              <span>{account.lastName}</span>
             </div>
             <div className="w-full flex items-center mb-5">
               <span className="mr-5">EMAIL : </span>
-              <span>huykaito1412@gmail.com</span>
+              <span>{account.email}</span>
             </div>
             <div className="w-full flex items-center mb-5">
-              <span className="mr-5">BIRTHDAY : </span>
-              <span>8-3-2001</span>
-            </div>
-            <div className="w-full flex items-center mb-10">
               <span className="mr-5">PHONE : </span>
-              <span>0937899623</span>
+              <span>{account.phone}</span>
             </div>
-            <div className="w-full flex items-center mb-5">
-              <div
-                className="button-admin"
-                onClick={() => {
-                  setOpenModal(true);
-                  setChoice("reset");
-                }}
-              >
-                Reset Password
-              </div>
+            <div className="w-full flex items-center">
+              <span className="mr-5">ADDRESS : </span>
+              <span>{account.address}</span>
             </div>
+            <div className="w-full flex items-center mb-5"></div>
           </div>
         </div>
       </div>

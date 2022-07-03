@@ -1,10 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalInforOrder from "../components/modal/ModalADMOrder/ModalInforOrder";
 import ModalAdvanced from "../components/modal/ModalAdvanced";
+import ModalInforOrderShipper from "../components/modal/ModalSOrder/ModalInforOrderShipper";
+import Paginate from "../components/Paginate/Paginate";
+import { deliveryOrderShipper, getShipperData } from "../http/httpHandle";
 
 const SOrdersPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [choice, setChoice] = useState("");
+  const [order, setOrder] = useState([]);
+  const [idOrder, setIdOrder] = useState();
+  const [nextPage, setNextPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const handleGetOrder = async (nextPage) => {
+    const data = await getShipperData("order", nextPage);
+    setTotalPage(data.data.totalpage);
+    setOrder(data.data.list);
+  };
+  const handleDeliveredOrder = async (id) => {
+    let confirmAction = window.confirm("Are you sure to delivery this order?");
+    if (confirmAction) {
+      await deliveryOrderShipper(`order/delivered`, null, id);
+    } else return;
+  };
+  const handleCancelOrder = async (id) => {
+    let confirmAction = window.confirm("Are you sure to cancel this order?");
+    if (confirmAction) {
+      await deliveryOrderShipper(`order/cancel-order`, null, id);
+    } else return;
+  };
+  useEffect(() => {
+    handleGetOrder(nextPage);
+  }, [nextPage]);
   return (
     <>
       <div className="h-[80px] w-full"></div>
@@ -13,47 +40,27 @@ const SOrdersPage = () => {
           <i className="fas fa-file-alt mr-5 text-4xl"></i>
           ORDERS MANAGEMENT
         </div>
-        <div className="flex justify-between ">
-          <div className="flex items-center justify-start">
-            <select className="outline-none border border-adminBorder rounded-md px-2 py-1">
-              <option>All Status</option>
-              <option value="">Unconfirmed</option>
-              <option value="">Processing</option>
-              <option value="">Successful</option>
-            </select>
-          </div>
-          <div className="flex items-center justify-start">
-            <input
-              type="text"
-              className="outline-none px-2 mr-3 rounded-md py-1 border focus:border-admin"
-              placeholder="Find Order"
-            />
-            <button className="button-admin px-4 py-1 border border-admin">
-              <i className="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-12 mb-5 border  border-b-0 border-admin">
           <table className="w-full text-sm text-left text-white bg-admin">
             <thead className="text-xs text-white uppercase bg-admin">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  Date Start
+                  Order Date
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  ID Order
+                  ID
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Full Name
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Last Name
+                  Phone
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Email
+                  Address
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Amount Price
+                  Total
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Status
@@ -64,41 +71,65 @@ const SOrdersPage = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b text-gray-700 border-admin">
-                <td className="px-6 py-4">1-1-2001</td>
-                <td className="px-6 py-4">1</td>
-                <td className="px-6 py-4">Nguyen Trong</td>
-                <td className="px-6 py-4">Huy</td>
-                <td className="px-6 py-4">Email</td>
-                <td className="px-6 py-4">500</td>
-                <td className="px-6 py-4">Unconfirmed</td>
-                <td className="px-6 py-4 flex items-center justify-between">
-                  <button
-                    className="button-admin py-2 px-4 rounded-md bg-yellow-500"
-                    onClick={() => {
-                      setOpenModal(true);
-                      setChoice("info");
-                    }}
+              {order.length > 0 &&
+                order.map((item) => (
+                  <tr
+                    key={item.id}
+                    className="bg-white border-b text-gray-700 border-admin"
                   >
-                    <i className="fas fa-info-circle"></i>
-                  </button>
-                  <button className="button-admin py-2 px-4 rounded-md bg-green-500">
-                    <i className="fas fa-check"></i>
-                  </button>
-                  <button className="button-admin py-2 px-4 rounded-md bg-red-500">
-                    <i className="fas fa-times"></i>
-                  </button>
-                </td>
-              </tr>
+                    <td className="px-6 py-4">{item.orderDate}</td>
+                    <td className="px-6 py-4">{item.id}</td>
+                    <td className="px-6 py-4">{item.receiverName}</td>
+                    <td className="px-6 py-4">{item.receiverPhone}</td>
+                    <td className="px-6 py-4">{item.address}</td>
+                    <td className="px-6 py-4">{item.totalMoney}</td>
+                    <td className="px-6 py-4">{item.status}</td>
+                    <td className="px-6 py-4 flex items-center justify-between">
+                      <button
+                        className="button-admin py-2 px-4 rounded-md bg-yellow-500"
+                        onClick={() => {
+                          setOpenModal(true);
+                          setChoice("info");
+                          setIdOrder(item.id);
+                        }}
+                      >
+                        <i className="fas fa-info-circle"></i>
+                      </button>
+                      <button
+                        className="button-admin py-2 px-4 rounded-md bg-green-500"
+                        onClick={() => {
+                          handleDeliveredOrder(item.id);
+                        }}
+                      >
+                        <i className="fas fa-check"></i>
+                      </button>
+                      <button
+                        className="button-admin py-2 px-4 rounded-md bg-red-500"
+                        onClick={() => {
+                          handleCancelOrder(item.id);
+                        }}
+                      >
+                        <i className="fas fa-times"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
+        <Paginate
+          style={{ color: "#8981d8" }}
+          nextPage={nextPage}
+          setNextPage={setNextPage}
+          totalPage={totalPage}
+        ></Paginate>
       </div>
       <ModalAdvanced visible={openModal} onClose={() => setOpenModal(false)}>
         {choice === "info" && (
-          <ModalInforOrder
+          <ModalInforOrderShipper
             onClose={() => setOpenModal(false)}
-          ></ModalInforOrder>
+            id={idOrder}
+          ></ModalInforOrderShipper>
         )}
       </ModalAdvanced>
     </>

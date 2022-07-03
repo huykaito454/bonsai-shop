@@ -24,6 +24,20 @@ export const getData = async (type) => {
     console.log(error);
   }
 };
+export const getSearch = async (type, keyword) => {
+  try {
+    const res = await axios.get(API.getAPI(type), {
+      params: { keyword: keyword },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    // alert(error.response.data.message);
+    console.log(error);
+  }
+};
 export const paymentData = async (type, data) => {
   try {
     const res = await axios.post(API.getAPI(type), data, config);
@@ -98,7 +112,7 @@ export const removeToCart = async (type, productId) => {
   }
 };
 //HandleAdmin
-export const getDataAdmin = async (type, page = 1, limit = 10) => {
+export const getDataAdmin = async (type, page = 1, limit = 8) => {
   try {
     const res = await axios.get(API.getAPIAdmin(type), {
       params: { page: page, limit: limit },
@@ -190,6 +204,38 @@ export const deleteDataAdmin = async (type) => {
     alert(res.data.message);
     window.location.reload(false);
   } catch (error) {
+    alert(error.response.data.message);
+  }
+};
+//Handler Shipper
+export const getShipperData = async (type, page = 1, limit = 10) => {
+  try {
+    const res = await axios.get(API.getAPIShipper(type), {
+      params: { page: page, limit: limit },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const deliveryOrderShipper = async (type, data, id) => {
+  try {
+    const res = await axios.put(API.getAPIShipper(type), data, {
+      params: { id_order: id },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    alert(res.data.message);
+    window.location.reload(false);
+    return res.data;
+  } catch (error) {
+    console.log(error);
     alert(error.response.data.message);
   }
 };

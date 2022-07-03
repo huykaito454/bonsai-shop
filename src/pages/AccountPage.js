@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getData } from "../http/httpHandle";
+import { getData, getUserData } from "../http/httpHandle";
 import { useForm } from "react-hook-form";
 
 const AccountPage = () => {
@@ -48,6 +48,15 @@ const AccountPage = () => {
 };
 
 const OrderHistory = ({ open = "" }) => {
+  const [order, setOrder] = useState([]);
+  const handleGetOrders = async () => {
+    const data = await getUserData("order-user");
+    console.log(data);
+    setOrder(data.data.list);
+  };
+  useEffect(() => {
+    handleGetOrders();
+  }, []);
   return (
     <div
       className={`account-content flex-1 shrink-0 ${
@@ -60,41 +69,59 @@ const OrderHistory = ({ open = "" }) => {
           <thead className="text-xs text-white uppercase bg-primary">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Date Start
+                Order Date
               </th>
               <th scope="col" className="px-6 py-3">
-                ID Order
+                ID
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Phone
               </th>
               <th scope="col" className="px-6 py-3">
                 Address
               </th>
               <th scope="col" className="px-6 py-3">
+                Product
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Total Price
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Receive Date
               </th>
               <th scope="col" className="px-6 py-3">
                 Status
               </th>
-              <th scope="col" className="px-6 py-3">
-                Action
-              </th>
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white border-b text-gray-700 border-primary">
-              <td className="px-6 py-4">1-1-2001</td>
-              <td className="px-6 py-4">1</td>
-              <td className="px-6 py-4">84/4 Đường số 13 Linh Xuân Thủ Đức</td>
-              <td className="px-6 py-4">500</td>
-              <td className="px-6 py-4">Unconfirmed</td>
-              <td className="px-6 py-4 flex items-center justify-between">
-                <button className="button-admin py-2 px-4 rounded-md bg-yellow-500">
-                  <i className="fas fa-info-circle"></i>
-                </button>
-                <button className="button-admin py-2 px-4 rounded-md bg-red-500">
-                  <i className="fas fa-ban"></i>
-                </button>
-              </td>
-            </tr>
+            {order.length > 0 &&
+              order.map((item) => (
+                <tr
+                  key={item.id}
+                  className="bg-white border-b text-gray-700 border-primary"
+                >
+                  <td className="px-6 py-4">{item.orderDate}</td>
+                  <td className="px-6 py-4">{item.id}</td>
+                  <td className="px-6 py-4">{item.receiverName}</td>
+                  <td className="px-6 py-4">{item.receiverPhone}</td>
+                  <td className="px-6 py-4">{item.address}</td>
+                  <td className="px-6 py-4 flex items-start flex-col flex-nowrap">
+                    {item.orderDetails.length > 0 &&
+                      item.orderDetails.map((item) => (
+                        <span key={item.id}>
+                          {item.product.name} : {item.quantity}
+                        </span>
+                      ))}
+                  </td>
+                  <td className="px-6 py-4">{item.totalMoney} $</td>
+                  <td className="px-6 py-4">{item.receiveDate}</td>
+                  <td className="px-6 py-4">{item.status}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

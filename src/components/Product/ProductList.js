@@ -13,7 +13,7 @@ const ProductList = ({ type }) => {
     handle();
   }, []);
   return (
-    <div className="product-list ">
+    <div className="product-list">
       <Swiper grabCursor={"true"} spaceBetween={40} slidesPerView={"auto"}>
         {product.length > 0 &&
           product.slice(0, 5).map((item) => (

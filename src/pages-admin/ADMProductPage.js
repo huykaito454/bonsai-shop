@@ -3,6 +3,7 @@ import ModalCreateProduct from "../components/modal/ModalADMProduct/ModalCreateP
 import ModalEditProduct from "../components/modal/ModalADMProduct/ModalEditProduct";
 import ModalInforProduct from "../components/modal/ModalADMProduct/ModalInforProduct";
 import ModalAdvanced from "../components/modal/ModalAdvanced";
+import Paginate from "../components/Paginate/Paginate";
 import { deleteDataAdmin, getDataAdmin } from "../http/httpHandle";
 
 const ADMProductPage = () => {
@@ -10,9 +11,12 @@ const ADMProductPage = () => {
   const [choice, setChoice] = useState("");
   const [product, setProduct] = useState([]);
   const [idProduct, setIdProduct] = useState();
-  const handleGetAllProduct = async () => {
-    const getData = await getDataAdmin("product");
+  const [nextPage, setNextPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const handleGetAllProduct = async (nextPage) => {
+    const getData = await getDataAdmin("product", nextPage);
     const data = getData.data.list;
+    setTotalPage(getData.data.totalpage);
     setProduct(data);
   };
   const handleDeleteProduct = (id) => {
@@ -22,8 +26,8 @@ const ADMProductPage = () => {
     } else return;
   };
   useEffect(() => {
-    handleGetAllProduct();
-  }, []);
+    handleGetAllProduct(nextPage);
+  }, [nextPage]);
   return (
     <>
       <div className="h-[80px] w-full"></div>
@@ -44,27 +48,6 @@ const ADMProductPage = () => {
             >
               <i className="fas fa-plus"></i>
             </button>
-          </div>
-          <div className="flex items-center justify-start">
-            <input
-              type="text"
-              className="outline-none px-2 mr-3 rounded-md py-1 border focus:border-admin"
-              placeholder="Find Product"
-            />
-            <button className="button-admin px-4 py-1 border border-admin">
-              <i className="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
-        <div className="flex justify-between">
-          <div className="flex items-center justify-start">
-            <span className="mr-3">Filter By Category</span>
-            <select className="outline-none border border-adminBorder rounded-md px-2 py-1">
-              <option></option>
-              <option value="">TEST</option>
-              <option value="">TEST</option>
-              <option value="">TEST</option>
-            </select>
           </div>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-12 mb-5 border  border-b-0 border-admin">
@@ -112,6 +95,12 @@ const ADMProductPage = () => {
             </tbody>
           </table>
         </div>
+        <Paginate
+          style={{ color: "#8981d8" }}
+          nextPage={nextPage}
+          setNextPage={setNextPage}
+          totalPage={totalPage}
+        ></Paginate>
       </div>
       <ModalAdvanced visible={openModal} onClose={() => setOpenModal(false)}>
         {choice === "new" && (

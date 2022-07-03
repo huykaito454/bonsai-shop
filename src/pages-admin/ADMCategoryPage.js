@@ -43,16 +43,6 @@ const ADMCategoryPage = () => {
               <i className="fas fa-plus"></i>
             </button>
           </div>
-          <div className="flex items-center justify-start">
-            <input
-              type="text"
-              className="outline-none px-2 mr-3 rounded-md py-1 border focus:border-admin"
-              placeholder="Find Category"
-            />
-            <button className="button-admin px-4 py-1 border border-admin">
-              <i className="fas fa-search"></i>
-            </button>
-          </div>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-12 mb-5 border  border-b-0 border-admin">
           <table className="w-full text-sm text-left text-white bg-admin">

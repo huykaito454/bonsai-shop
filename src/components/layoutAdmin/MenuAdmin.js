@@ -80,17 +80,6 @@ const MenuAdmin = () => {
           <i className="fas fa-file-alt w-[20%] text-xl"></i>
           <span className="text-base font-semibold">Orders</span>
         </NavLink>
-        <NavLink
-          to={"/admin/support"}
-          className={({ isActive }) =>
-            isActive
-              ? "text-adminHover flex items-center py-2 cursor-pointer w-full"
-              : "flex items-center py-2 cursor-pointer w-full hover:text-adminHover "
-          }
-        >
-          <i className="fas fa-headphones-alt w-[20%] text-xl "></i>
-          <span className="text-base font-semibold">Support</span>
-        </NavLink>
       </div>
       <div className="menu-button flex flex-col items-start mb-5 border-t border-adminBorder border-opacity-80 pb-4 transition-all pt-2 text-white">
         <NavLink

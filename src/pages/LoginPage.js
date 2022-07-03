@@ -73,7 +73,7 @@ const FormLogin = () => {
           {...register("password")}
         />
       </div>
-      <p className=" text-primary font-semibold mb-5">Forgot your password?</p>
+
       <button className="button w-[80%]">Sign In</button>
     </form>
   );
