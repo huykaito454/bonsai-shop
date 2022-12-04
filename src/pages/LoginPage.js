@@ -4,6 +4,7 @@ import { set, useForm } from "react-hook-form";
 import { API } from "../config";
 import axios from "axios";
 import { config } from "react-transition-group";
+import { useState } from "react";
 const LoginPage = () => {
   return (
     <div className="w-full page-container p-10 flex items-start justify-between">
@@ -25,6 +26,7 @@ const LoginPage = () => {
 };
 
 const FormLogin = () => {
+  const [check, setCheck] = useState(0);
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const onSubmit = (values, e) => {
@@ -32,16 +34,25 @@ const FormLogin = () => {
     handleLogin(values);
   };
   const handleLogin = async (data) => {
-    try {
-      const res = await axios.post(API.getAPI("login"), data);
-      console.log(res?.data);
-      localStorage.setItem("token", res?.data?.jwt);
-      localStorage.setItem("role", JSON.stringify(res?.data?.data?.roles));
+    if(check < 4){
+      try {
+        const res = await axios.post(API.getAPI("login"), data);
+        console.log(res?.data);
+        localStorage.setItem("token", res?.data?.jwt);
+        localStorage.setItem("role", JSON.stringify(res?.data?.data?.roles));
+        alert("Login success");
+        navigate("/");
+        window.location.reload(false);
+      } catch (error) {
+        alert(error.response.data.message);
+        setCheck(check + 1);
+      }
+    } else {
+      alert("Please try again later");
       navigate("/");
       window.location.reload(false);
-    } catch (error) {
-      alert(error.response.data.message);
     }
+
   };
   return (
     <form

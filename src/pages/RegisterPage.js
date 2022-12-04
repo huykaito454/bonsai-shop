@@ -3,7 +3,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { API, config } from "../config";
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 const RegisterPage = () => {
   return (
     <div className="w-full page-container p-10 flex items-start justify-between">
@@ -21,8 +22,33 @@ const RegisterPage = () => {
     </div>
   );
 };
+const schema = yup
+  .object({
+    email: yup
+      .string()
+      .email("Please enter valid email address")
+      .required("Please enter your email address"),
+    firstName: yup
+    .string()
+      .required("Please enter firstName"),
+    lastName: yup
+    .string()
+      .required("Please enter lastName"),
+    address: yup
+    .string()
+    .required("Please enter address"),  
+    phone: yup
+    .number()
+    .required("Please enter phone"),    
+    password: yup
+    .string()
+    .min(6, "Your password must be at least 6 characters")  
+    .required("Please enter your password"),
+  })
+  .required();
 const RegisterForm = () => {
-  const { register, handleSubmit } = useForm();
+  
+  const { register, handleSubmit, formState: { errors, isValid, isSubmitting }, } = useForm({ resolver: yupResolver(schema) });
   const navigate = useNavigate();
   const onSubmit = (values, e) => {
     e.preventDefault();
@@ -139,7 +165,7 @@ const RegisterForm = () => {
           className="p-3 w-[80%] outline-none border focus:border-primary mt-2"
         />
       </div>
-      <button type="submit" className="button w-[80%] my-5">
+      <button type="submit" className={`button w-[80%] my-5`}>
         Create
       </button>
       <div className="w-[80%] text-sm">

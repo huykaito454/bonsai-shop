@@ -33,35 +33,67 @@ const ModalEditProduct = ({ onClose = () => {}, id }) => {
     return new File([u8arr], filename, { type: mime });
   };
   const onSubmit = (values, e) => {
-    e.preventDefault();
-    const file = new FormData();
-    if (values.file.length > 0) {
-      file.append("file", values?.file[0]);
-    } else {
-      const fileImageOld = dataURLtoFile(
-        `data:text/plain;base64,${values.image}`,
-        "img.txt"
-      );
-      file.append("file", fileImageOld);
+    let x = handleCheck(values.price);
+    let y = handleCheckQuantity(values.quantityStock);
+    if(x && y){
+      e.preventDefault();
+      const file = new FormData();
+      if (values.file.length > 0) {
+        file.append("file", values?.file[0]);
+      } else {
+        const fileImageOld = dataURLtoFile(
+          `data:text/plain;base64,${values.image}`,
+          "img.txt"
+        );
+        file.append("file", fileImageOld);
+      }
+      const product = {
+        name: values.name,
+        description: values.description,
+        information: values.information,
+        category: values.category.id,
+        price: values.price,
+        image: "",
+        quantitySold: values.quantitySold,
+        quantityStock: values.quantityStock,
+      };
+      putDataProductAdmin(`product/${id}`, file, {
+        params: { product: product, file: file },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
     }
-    const product = {
-      name: values.name,
-      description: values.description,
-      information: values.information,
-      category: values.category.id,
-      price: values.price,
-      image: "",
-      quantitySold: values.quantitySold,
-      quantityStock: values.quantityStock,
-    };
-    putDataProductAdmin(`product/${id}`, file, {
-      params: { product: product, file: file },
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
   };
+  const handleCheck = (e) => {
+    if(isNaN(Number(e))){
+      alert("Price error")
+      return false;
+    }
+    else if(Number(e) >= 100000){
+      alert("Price too large")
+      return false;
+    } else if (Number(e) < 0) {
+      alert("Price too small")
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+  const handleCheckQuantity = (e) => {
+  if(Number(e) > 1000){
+      alert("Price too large")
+      return false;
+    } else if (Number(e) < 0) {
+      alert("Price too small")
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
   useEffect(() => {
     handleGetProduct();
     handleGetAllCategory();
@@ -146,12 +178,15 @@ const ModalEditProduct = ({ onClose = () => {}, id }) => {
                 htmlFor=""
                 className=" text-gray-500 text-sm font-semibold"
               >
-                IN STOCK
+                QUANTITY
               </label>
               <br></br>
               <input
-                type="text"
+                type="number"
                 {...register("quantityStock")}
+                onChange={(e) => {
+                  handleCheckQuantity(e.target.value)
+                }}
                 className="p-3 w-full outline-none border focus:border-admin mt-2"
               />
             </div>
@@ -166,6 +201,9 @@ const ModalEditProduct = ({ onClose = () => {}, id }) => {
               <input
                 type="text"
                 {...register("price")}
+                onChange={(e) => {
+                  handleCheck(e.target.value)
+                }}
                 className="p-3 w-full outline-none border focus:border-admin mt-2"
               />
             </div>
