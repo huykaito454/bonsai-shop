@@ -5,6 +5,7 @@ import { API } from "../config";
 import axios from "axios";
 import { config } from "react-transition-group";
 import { useState } from "react";
+import { toast } from "react-toastify";
 const LoginPage = () => {
   return (
     <div className="w-full page-container p-10 flex items-start justify-between">
@@ -34,25 +35,47 @@ const FormLogin = () => {
     handleLogin(values);
   };
   const handleLogin = async (data) => {
-    if(check < 4){
+    if (check < 4) {
       try {
         const res = await axios.post(API.getAPI("login"), data);
         console.log(res?.data);
         localStorage.setItem("token", res?.data?.jwt);
         localStorage.setItem("role", JSON.stringify(res?.data?.data?.roles));
-        alert("Login success");
+        toast.success("Login success", {
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         navigate("/");
-        window.location.reload(false);
       } catch (error) {
-        alert(error.response.data.message);
+        toast.error(error.response.data.message, {
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setCheck(check + 1);
       }
     } else {
-      alert("Please try again later");
+      toast.error("Please try again later", {
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       navigate("/");
-      window.location.reload(false);
+      // window.location.reload(false);
     }
-
   };
   return (
     <form

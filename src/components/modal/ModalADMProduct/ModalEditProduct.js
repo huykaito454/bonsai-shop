@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { getDataAdmin, putDataProductAdmin } from "../../../http/httpHandle";
 
 const ModalEditProduct = ({ onClose = () => {}, id }) => {
@@ -35,7 +36,7 @@ const ModalEditProduct = ({ onClose = () => {}, id }) => {
   const onSubmit = (values, e) => {
     let x = handleCheck(values.price);
     let y = handleCheckQuantity(values.quantityStock);
-    if(x && y){
+    if (x && y) {
       e.preventDefault();
       const file = new FormData();
       if (values.file.length > 0) {
@@ -67,33 +68,70 @@ const ModalEditProduct = ({ onClose = () => {}, id }) => {
     }
   };
   const handleCheck = (e) => {
-    if(isNaN(Number(e))){
-      alert("Price error")
+    if (isNaN(Number(e))) {
+      toast.error("Price error", {
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return false;
-    }
-    else if(Number(e) >= 100000){
-      alert("Price too large")
+    } else if (Number(e) >= 100000) {
+      toast.error("Price too large", {
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return false;
     } else if (Number(e) < 0) {
-      alert("Price too small")
+      toast.error("Price too small", {
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return false;
-    }
-    else{
+    } else {
       return true;
     }
-  }
+  };
   const handleCheckQuantity = (e) => {
-  if(Number(e) > 1000){
-      alert("Price too large")
+    if (Number(e) > 1000) {
+      toast.error("Price too large", {
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return false;
     } else if (Number(e) < 0) {
-      alert("Price too small")
+      toast.error("Price too small", {
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return false;
-    }
-    else{
+    } else {
       return true;
     }
-  }
+  };
   useEffect(() => {
     handleGetProduct();
     handleGetAllCategory();
@@ -185,7 +223,7 @@ const ModalEditProduct = ({ onClose = () => {}, id }) => {
                 type="number"
                 {...register("quantityStock")}
                 onChange={(e) => {
-                  handleCheckQuantity(e.target.value)
+                  handleCheckQuantity(e.target.value);
                 }}
                 className="p-3 w-full outline-none border focus:border-admin mt-2"
               />
@@ -202,7 +240,7 @@ const ModalEditProduct = ({ onClose = () => {}, id }) => {
                 type="text"
                 {...register("price")}
                 onChange={(e) => {
-                  handleCheck(e.target.value)
+                  handleCheck(e.target.value);
                 }}
                 className="p-3 w-full outline-none border focus:border-admin mt-2"
               />

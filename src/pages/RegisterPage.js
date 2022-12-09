@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { API, config } from "../config";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "react-toastify";
 const RegisterPage = () => {
   return (
     <div className="w-full page-container p-10 flex items-start justify-between">
@@ -28,27 +29,22 @@ const schema = yup
       .string()
       .email("Please enter valid email address")
       .required("Please enter your email address"),
-    firstName: yup
-    .string()
-      .required("Please enter firstName"),
-    lastName: yup
-    .string()
-      .required("Please enter lastName"),
-    address: yup
-    .string()
-    .required("Please enter address"),  
-    phone: yup
-    .number()
-    .required("Please enter phone"),    
+    firstName: yup.string().required("Please enter firstName"),
+    lastName: yup.string().required("Please enter lastName"),
+    address: yup.string().required("Please enter address"),
+    phone: yup.number().required("Please enter phone"),
     password: yup
-    .string()
-    .min(6, "Your password must be at least 6 characters")  
-    .required("Please enter your password"),
+      .string()
+      .min(6, "Your password must be at least 6 characters")
+      .required("Please enter your password"),
   })
   .required();
 const RegisterForm = () => {
-  
-  const { register, handleSubmit, formState: { errors, isValid, isSubmitting }, } = useForm({ resolver: yupResolver(schema) });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm({ resolver: yupResolver(schema) });
   const navigate = useNavigate();
   const onSubmit = (values, e) => {
     e.preventDefault();
@@ -65,14 +61,39 @@ const RegisterForm = () => {
     };
     console.log(newData);
     if (data.password !== data.passwordConfirm) {
-      alert("Mật khẩu không trùng khớp");
+      toast.error("Mật khẩu không trùng khớp", {
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else {
       try {
         const res = await axios.post(API.getAPI("register"), newData);
-        alert(res.data.message);
+
+        toast.error(res.data.message, {
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         navigate("/login");
       } catch (error) {
-        alert(error.response.data.message);
+        toast.error(error.response.data.message, {
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     }
   };

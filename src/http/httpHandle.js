@@ -2,6 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API, config } from "../config";
 //Handle Guest
+import { toast } from "react-toastify";
 export const getGuestData = async (type, page = 1, limit = 12) => {
   try {
     const res = await axios.get(API.getAPI(type), {
@@ -34,18 +35,31 @@ export const getSearch = async (type, keyword) => {
     });
     return res.data;
   } catch (error) {
-    // alert(error.response.data.message);
     console.log(error);
   }
 };
 export const paymentData = async (type, data) => {
   try {
     const res = await axios.post(API.getAPI(type), data, config);
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   } catch (error) {
-    console.log(error);
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 export const getUserData = async (type, page = 1, limit = 10) => {
@@ -71,12 +85,28 @@ export const addToCart = async (type, data, productId) => {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
     return res.data;
   } catch (error) {
     console.log(error);
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 export const putToCart = async (type, data, productId, quantity) => {
@@ -88,12 +118,28 @@ export const putToCart = async (type, data, productId, quantity) => {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
     return res.data;
   } catch (error) {
     console.log(error);
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 export const removeToCart = async (type, productId) => {
@@ -105,10 +151,25 @@ export const removeToCart = async (type, productId) => {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   } catch (error) {
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 //HandleAdmin
@@ -129,30 +190,75 @@ export const getDataAdmin = async (type, page = 1, limit = 8) => {
 export const postDataAdmin = async (type, data) => {
   try {
     const res = await axios.post(API.getAPIAdmin(type), data, config);
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   } catch (error) {
     console.log(error);
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 export const postDataProductAdmin = async (type, data, config) => {
   try {
     const res = await axios.post(API.getAPIAdmin(type), data, config);
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   } catch (error) {
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 export const putDataProductAdmin = async (type, data, config) => {
   try {
     const res = await axios.put(API.getAPIAdmin(type), data, config);
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   } catch (error) {
     console.log(error);
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 export const cancelOrderAdmin = async (type, data, id) => {
@@ -164,12 +270,28 @@ export const cancelOrderAdmin = async (type, data, id) => {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
     return res.data;
   } catch (error) {
     console.log(error);
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 export const assignShipper = async (type, data, idShipper, idOrder) => {
@@ -181,30 +303,76 @@ export const assignShipper = async (type, data, idShipper, idOrder) => {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
     return res.data;
   } catch (error) {
     console.log(error);
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 export const putDataAdmin = async (type, data) => {
   try {
     const res = await axios.put(API.getAPIAdmin(type), data, config);
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   } catch (error) {
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 export const deleteDataAdmin = async (type) => {
   try {
     const res = await axios.delete(API.getAPIAdmin(type), config);
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   } catch (error) {
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 //Handler Shipper
@@ -231,11 +399,27 @@ export const deliveryOrderShipper = async (type, data, id) => {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
-    alert(res.data.message);
-    window.location.reload(false);
+    toast.success(res.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
     return res.data;
   } catch (error) {
     console.log(error);
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { assignShipper, getDataAdmin } from "../../../http/httpHandle";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 const ModalShipOrder = ({ onClose = () => {}, id }) => {
   const [shipper, setShipper] = useState([]);
   const { register, handleSubmit } = useForm();
@@ -11,7 +12,15 @@ const ModalShipOrder = ({ onClose = () => {}, id }) => {
   };
   const onSubmit = async (values) => {
     if (values.id_shipper === " ") {
-      alert("Empty assignment");
+      toast.error("Empty assignment", {
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else {
       await assignShipper("order/assignment", null, values.id_shipper, id);
     }
